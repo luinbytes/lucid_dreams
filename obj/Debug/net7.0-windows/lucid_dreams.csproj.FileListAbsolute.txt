@@ -1,0 +1,17 @@
+C:\Users\crims\Documents\GitHub\lucid_dreams\bin\Debug\net7.0-windows\lucid_dreams.exe
+C:\Users\crims\Documents\GitHub\lucid_dreams\bin\Debug\net7.0-windows\lucid_dreams.deps.json
+C:\Users\crims\Documents\GitHub\lucid_dreams\bin\Debug\net7.0-windows\lucid_dreams.runtimeconfig.json
+C:\Users\crims\Documents\GitHub\lucid_dreams\bin\Debug\net7.0-windows\lucid_dreams.dll
+C:\Users\crims\Documents\GitHub\lucid_dreams\bin\Debug\net7.0-windows\lucid_dreams.pdb
+C:\Users\crims\Documents\GitHub\lucid_dreams\obj\Debug\net7.0-windows\lucid_dreams.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\crims\Documents\GitHub\lucid_dreams\obj\Debug\net7.0-windows\lucid_dreams.AssemblyInfoInputs.cache
+C:\Users\crims\Documents\GitHub\lucid_dreams\obj\Debug\net7.0-windows\lucid_dreams.AssemblyInfo.cs
+C:\Users\crims\Documents\GitHub\lucid_dreams\obj\Debug\net7.0-windows\lucid_dreams.csproj.CoreCompileInputs.cache
+C:\Users\crims\Documents\GitHub\lucid_dreams\obj\Debug\net7.0-windows\lucid_dreams.dll
+C:\Users\crims\Documents\GitHub\lucid_dreams\obj\Debug\net7.0-windows\refint\lucid_dreams.dll
+C:\Users\crims\Documents\GitHub\lucid_dreams\obj\Debug\net7.0-windows\lucid_dreams.pdb
+C:\Users\crims\Documents\GitHub\lucid_dreams\obj\Debug\net7.0-windows\lucid_dreams.genruntimeconfig.cache
+C:\Users\crims\Documents\GitHub\lucid_dreams\obj\Debug\net7.0-windows\ref\lucid_dreams.dll
+C:\Users\crims\Documents\GitHub\lucid_dreams\obj\Debug\net7.0-windows\lucid_dreams.csproj.AssemblyReference.cache
+C:\Users\crims\Documents\GitHub\lucid_dreams\bin\Debug\net7.0-windows\MaterialSkin.dll
+C:\Users\crims\Documents\GitHub\lucid_dreams\obj\Debug\net7.0-windows\lucid_dreams.csproj.CopyComplete
