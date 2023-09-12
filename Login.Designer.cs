@@ -52,9 +52,15 @@ namespace lucid_dreams
 
         private void Login_Load(object sender, EventArgs e)
         {
-            config = LoadConfig();
-            SaveConfig(config);
             // Now you can use config.UserKey and other properties
+            if (File.Exists("key.txt"))
+            {
+                // Read the contents of the file
+                string key = File.ReadAllText("key.txt");
+
+                // Set the text of the keyTextBox to the contents of the file
+                keyTextBox.Text = key;
+            }
         }
 
         private void Login_FormClosing(object sender, FormClosingEventArgs e)
@@ -74,6 +80,8 @@ namespace lucid_dreams
         public static string GlobalScore;
         public static string AvatarURL;
         public static string GlobalConfig;
+
+        private MaterialTextBox keyTextBox;
        
         /// <summary>
         ///  Required designer variable.
@@ -101,6 +109,7 @@ namespace lucid_dreams
         /// </summary>
         private void InitializeComponent()
         {
+            this.Load += Login_Load;
             MaterialSkinManager materialSkinManager = MaterialSkinManager.Instance;
             materialSkinManager.AddFormToManage(this);
             materialSkinManager.Theme = MaterialSkinManager.Themes.DARK;
@@ -111,9 +120,10 @@ namespace lucid_dreams
             this.ClientSize = new System.Drawing.Size(320, 160);
             this.FormBorderStyle = FormBorderStyle.FixedSingle;
             this.MaximizeBox = false;
+            this.Sizable = false;
             this.Text = "Lucid Dreams - Login";
 
-            MaterialTextBox keyTextBox = new MaterialTextBox();
+            keyTextBox = new MaterialTextBox();
             keyTextBox.Hint = "Enter your key";
             keyTextBox.Location = new Point(10, 80);
             keyTextBox.Size = new Size(315, 30);

@@ -8,6 +8,7 @@ using System.Web;
 
 namespace lucid_dreams
 {
+
     public partial class Dashboard : MaterialForm
     {
         string userkey = Login.GlobalUserKey;
@@ -40,8 +41,9 @@ namespace lucid_dreams
             this.components = new System.ComponentModel.Container();
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(650, 500);
-            this.FormBorderStyle = FormBorderStyle.Fixed3D;
+            this.FormBorderStyle = FormBorderStyle.FixedSingle;
             this.MaximizeBox = false;
+            this.Sizable = false;
             this.Text = "Lucid Dreams - Dashboard";
 
             this.materialTabSelector = new MaterialTabSelector();
@@ -175,6 +177,87 @@ namespace lucid_dreams
 
             // Add the Panel to the "User Control" tab
             this.materialTabControl.TabPages[0].Controls.Add(forumStatsPanel);
+
+            // Create a new MaterialComboBox for the test options
+            MaterialSkin.Controls.MaterialComboBox testOptionsComboBox = new MaterialSkin.Controls.MaterialComboBox
+            {
+                Location = new Point(430, 400), // Adjust these values to position the ComboBox
+                AutoResize = true,
+                Size = new Size(200, 26), // Adjust these values to change the size of the ComboBox
+                AutoCompleteSource = AutoCompleteSource.ListItems, // Set the AutoCompleteSource to ListItems so the ComboBox suggests items as the user types
+                AutoCompleteMode = AutoCompleteMode.SuggestAppend // Set the AutoCompleteMode to SuggestAppend so the ComboBox appends the suggested text to the user's input
+            };
+
+            // Add the test options to the ComboBox
+            int protectionLevel;
+            if (int.TryParse(Login.GlobalProtection, out protectionLevel))
+            {
+                testOptionsComboBox.Items.AddRange(new string[] { "Standard", "Zombie", "Kernel", "Min (Usr)", "Min (Ker)" });
+                testOptionsComboBox.SelectedIndex = protectionLevel;
+            }
+            else
+            {
+                MessageBox.Show("Error!");
+            }
+
+            // Create a new MaterialButton for setting the protection
+            MaterialSkin.Controls.MaterialButton setProtectionButton = new MaterialSkin.Controls.MaterialButton
+            {
+                AutoSize = false,
+                Location = new Point(testOptionsComboBox.Location.X + testOptionsComboBox.Width + 10, testOptionsComboBox.Location.Y), // Position the Button next to the ComboBox
+                Size = new Size(100, 49), // Adjust these values to change the size of the Button
+                Text = "Set Protection" // Set the Text to "Set Protection"
+            };
+
+            setProtectionButton.Click += async (sender, e) =>
+            {
+                try
+                {
+                    // Make an API call to Constelia AI to set the protection
+                    HttpClient client = new HttpClient();
+                    HttpResponseMessage response = await client.GetAsync($"https://constelia.ai/api.php?key={userkey}&cmd=setProtection&protection={testOptionsComboBox.SelectedIndex}");
+                                
+                    if (response.IsSuccessStatusCode)
+                    {
+
+                        // Change the button text
+                        setProtectionButton.Text = "Protection set!";
+
+                        // Create a timer
+                        System.Windows.Forms.Timer timer = new System.Windows.Forms.Timer();
+                        timer.Interval = 5000; // Set the timer interval to 5 seconds
+
+                        // Add an event handler for the Tick event
+                        timer.Tick += (s, ea) =>
+                        {
+                            // Reset the button text
+                            setProtectionButton.Text = "Set Protection";
+
+                            // Stop the timer
+                            timer.Stop();
+                        };
+
+                        // Start the timer
+                        timer.Start();
+                    }
+                    else
+                    {
+                        MessageBox.Show("Failed to set the protection.");
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"An error occurred: {ex.Message}");
+                }
+            };
+
+            // Add the Button to the "User Control" tab
+            this.materialTabControl.TabPages[0].Controls.Add(setProtectionButton);
+            
+
+            // Add the MaterialComboBox to the "Configuration" tab
+            this.materialTabControl.TabPages[0].Controls.Add(testOptionsComboBox);
+            
 
             JsonDocument document = JsonDocument.Parse(Login.GlobalConfig);
             string formattedJson = JsonSerializer.Serialize(document, new JsonSerializerOptions { WriteIndented = true });
