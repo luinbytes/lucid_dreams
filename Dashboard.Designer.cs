@@ -4,6 +4,7 @@ using MaterialSkin;
 using MaterialSkin.Controls;
 using System.Text.Json;
 using System.Text;
+using System.Web;
 
 namespace lucid_dreams
 {
@@ -248,14 +249,17 @@ namespace lucid_dreams
                     // Get the configuration from the TextBox
                     string config = multilineTextField.Text;
 
+                    // URL-encode the configuration
+                    string encodedConfig = HttpUtility.UrlEncode(config);
+
                     // Create a new HttpClient
                     HttpClient client = new HttpClient();
 
                     // Create the content for the POST request
-                    StringContent content = new StringContent(config, Encoding.UTF8, "application/json");
+                    StringContent content = new StringContent($"value={encodedConfig}", Encoding.UTF8, "application/x-www-form-urlencoded");
 
                     // Make a POST request to the Constelia AI API
-                    HttpResponseMessage response = await client.PostAsync($"https://constelia.ai/api.php?key={userkey}&cmd=setConfiguration", content); // Replace with the actual API endpoint
+                    HttpResponseMessage response = await client.PostAsync($"https://constelia.ai/api.php?key={userkey}&cmd=setConfiguration", content);
 
                     if (response.IsSuccessStatusCode)
                     {
@@ -336,6 +340,68 @@ namespace lucid_dreams
             // Add the Button to the "Configuration" tab
             this.materialTabControl.TabPages[1].Controls.Add(resetConfigButton);
             
+            // Create a new Button for FAQ
+            MaterialSkin.Controls.MaterialButton faqConfigButton = new MaterialSkin.Controls.MaterialButton
+            {
+                Location = new Point(multilineTextField.Location.X + multilineTextField.Width + 25, 400), // Position the Button below the Reset Config Button
+                AutoSize = false,
+                Size = new Size(115, 36), // Adjust these values to change the size of the Button
+                Text = "FAQ" // Set the Text to "FAQ"
+            };
+
+            faqConfigButton.Click += (sender, e) =>
+            {
+                MessageBox.Show("Q: Error! The input does not contain any JSON tokens.\nA: Your config was most likely reset and is now empty. I'm not smart enough to figure out the error handling so here I am, a lonely, ugly messagebox.\nYou're welcome.\n\nQ: WTHECK is Gen Config?\nA: Reset your config by accident? Hit this to generate a default config.", "Lucid Dreams - FAQ", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            };
+
+            // Add the Button to the "Configuration" tab
+            this.materialTabControl.TabPages[1].Controls.Add(faqConfigButton);
+
+            MaterialSkin.Controls.MaterialButton generateConfigButton = new MaterialSkin.Controls.MaterialButton
+            {
+                Location = new Point(multilineTextField.Location.X + multilineTextField.Width + 25, 350), // Position the Button below the Reset Config Button
+                AutoSize = false,
+                Size = new Size(115, 36), // Adjust these values to change the size of the Button
+                Text = "Gen Config" // Set the Text to "FAQ"
+            };
+
+            generateConfigButton.Click += (sender, e) =>
+            {
+                // Get the configuration from the TextBox
+                string config = @"{
+                ""bones"": [4, 7, 10],
+                ""constelia.lua"": null,
+                ""constellation.lua"": {
+                    ""esp"": false,
+                    ""esp_fov"": 10,
+                    ""esp_sonar"": false,
+                    ""esp_surround"": true,
+                    ""humanizer"": true,
+                    ""humanizer_debug"": true,
+                    ""humanizer_mouse_threshold"": 32,
+                    ""humanizer_range_max"": 10,
+                    ""humanizer_range_min"": 0.6,
+                    ""iterations"": 1
+                },
+                ""fc2.lua"": {
+                    ""anti_aliasing"": false,
+                    ""change_compositor"": true,
+                    ""fps_lock"": false,
+                    ""linux_sound_command"": ""play -q"",
+                    ""multicore"": null,
+                    ""no_base"": false,
+                    ""xdotool"": true,
+                    ""zombie"": ""explorer.exe"",
+                    ""zombie_mm"": true
+                }
+            }";
+
+                // Set the TextBox contents to the generated config
+                multilineTextField.Text = config;
+            };
+
+            // Add the Button to the "Configuration" tab
+            this.materialTabControl.TabPages[1].Controls.Add(generateConfigButton);
 
         }
     }
