@@ -62,6 +62,7 @@ namespace lucid_dreams
             SaveConfig(config);
         }
 
+        public static string GlobalUserKey;
         public static string GlobalUsername;
         public static string GlobalLevel;
         public static string GlobalProtection;
@@ -72,6 +73,7 @@ namespace lucid_dreams
         public static string GlobalPosts;
         public static string GlobalScore;
         public static string AvatarURL;
+        public static string GlobalConfig;
        
         /// <summary>
         ///  Required designer variable.
@@ -119,8 +121,18 @@ namespace lucid_dreams
 
             MaterialButton loginButton = new MaterialButton();
             loginButton.Text = "Login";
-            loginButton.Location = new Point(135, 135);
+            loginButton.Location = new Point(this.ClientSize.Width - loginButton.Width - 115, this.ClientSize.Height - loginButton.Height + 29);
             this.Controls.Add(loginButton);
+
+            MaterialButton faqButton = new MaterialButton();
+            faqButton.Text = "FAQ";
+            faqButton.Location = new Point(this.ClientSize.Width - faqButton.Width - 10, this.ClientSize.Height - faqButton.Height - 10);
+            faqButton.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
+            this.Controls.Add(faqButton);
+
+            faqButton.Click += (sender, e) => {
+                MessageBox.Show("Q: Error! Unautherized!\nA: Your hash is incorrect. Try making a new session.\n\n", "Lucid Dreams - FAQ", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            };
 
             loginButton.Click += async (sender, e) => {
                 string userKey = keyTextBox.Text;
@@ -135,6 +147,8 @@ namespace lucid_dreams
                         if (response.IsSuccessStatusCode)
                         {
                             string result = await response.Content.ReadAsStringAsync();
+                            // Set the global user key
+                            GlobalUserKey = userKey;                            
 
                             // Parse the response
                             var jsonDocument = JsonDocument.Parse(result);
@@ -150,7 +164,8 @@ namespace lucid_dreams
                             GlobalRegisterDate = root.TryGetProperty("register_date", out var registerDateProperty) ? DateTimeOffset.FromUnixTimeSeconds(registerDateProperty.GetInt64()).DateTime.ToString() : null;
                             GlobalPosts = root.TryGetProperty("posts", out var postsProperty) ? postsProperty.GetInt32().ToString() : null;
                             GlobalScore = root.TryGetProperty("score", out var scoreProperty) ? scoreProperty.GetInt32().ToString() : null;
-                            AvatarURL = root.TryGetProperty("avatar", out var avatarURLProperty) ? avatarURLProperty.GetString() : null;                            
+                            AvatarURL = root.TryGetProperty("avatar", out var avatarURLProperty) ? avatarURLProperty.GetString() : null;  
+                            GlobalConfig = root.TryGetProperty("configuration", out var configProperty) ? configProperty.GetRawText() : default;                      
 
                             // Open Dashboard and close Login
                             this.Invoke(new Action(() => {

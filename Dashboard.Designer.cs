@@ -2,11 +2,14 @@
 using System.Windows.Forms;
 using MaterialSkin;
 using MaterialSkin.Controls;
+using System.Text.Json;
+using System.Text;
 
 namespace lucid_dreams
 {
     public partial class Dashboard : MaterialForm
     {
+        string userkey = Login.GlobalUserKey;
         string username = Login.GlobalUsername;
         string level = Login.GlobalLevel;
         string protection = Login.GlobalProtection;
@@ -35,8 +38,8 @@ namespace lucid_dreams
             
             this.components = new System.ComponentModel.Container();
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(600, 500);
-            this.FormBorderStyle = FormBorderStyle.FixedSingle;
+            this.ClientSize = new System.Drawing.Size(650, 500);
+            this.FormBorderStyle = FormBorderStyle.Fixed3D;
             this.MaximizeBox = false;
             this.Text = "Lucid Dreams - Dashboard";
 
@@ -46,16 +49,17 @@ namespace lucid_dreams
             // Tab Selector
             this.materialTabSelector.BaseTabControl = this.materialTabControl;
             this.materialTabSelector.Depth = 0;
-            this.materialTabSelector.Location = new System.Drawing.Point(0, 64);
+            this.materialTabSelector.Location = new System.Drawing.Point(-10, 64);
             this.materialTabSelector.MouseState = MaterialSkin.MouseState.HOVER;
-            this.materialTabSelector.Size = new System.Drawing.Size(620, 28);
+            this.materialTabSelector.Size = new System.Drawing.Size(800, 28);
             this.materialTabSelector.TabIndex = 0;
 
             // Tab Control
             this.materialTabControl.Depth = 0;
             this.materialTabControl.Location = new System.Drawing.Point(0, 84);
             this.materialTabControl.MouseState = MaterialSkin.MouseState.HOVER;
-            this.materialTabControl.Size = new System.Drawing.Size(600, 452);
+            this.materialTabControl.Size = new System.Drawing.Size(800, 452); // Adjust the width as needed
+            this.materialTabControl.ItemSize = new Size(20, 20); // Adjust these values to change the size of the tabs
             this.materialTabControl.TabIndex = 1;
 
             // Tabs
@@ -75,7 +79,7 @@ namespace lucid_dreams
                 SizeMode = PictureBoxSizeMode.StretchImage // Set the SizeMode to StretchImage so the avatar fits in the PictureBox
             };
 
-            avatarPictureBox.Location = new Point(0, this.ClientSize.Height - avatarPictureBox.Height - 45);
+            avatarPictureBox.Location = new Point(3, this.ClientSize.Height - avatarPictureBox.Height - 45);
 
             this.materialTabControl.TabPages[0].Controls.Add(avatarPictureBox);
 
@@ -107,10 +111,8 @@ namespace lucid_dreams
                 AutoSize = true // Set AutoSize to true so the Label adjusts its size based on the text
             };
 
-            // Add the Label to the Panel
             forumStatsPanel.Controls.Add(forumStatsLabel);
 
-            // Create a new Label for FID
             Label unreadConvLabel = new Label
             {
                 Location = new Point(5, 20), // Adjust these values to position the Label
@@ -118,10 +120,8 @@ namespace lucid_dreams
                 AutoSize = true // Set AutoSize to true so the Label adjusts its size based on the text
             };
 
-            // Add the Label to the forumStatsPanel
             forumStatsPanel.Controls.Add(unreadConvLabel);
 
-                        // Create a new Label for FID
             Label unreadAlertLabel = new Label
             {
                 Location = new Point(5, 35), // Adjust these values to position the Label
@@ -175,16 +175,167 @@ namespace lucid_dreams
             // Add the Panel to the "User Control" tab
             this.materialTabControl.TabPages[0].Controls.Add(forumStatsPanel);
 
-            // Create a new CheckBox
-            CheckBox saveUserKeyCheckBox = new CheckBox
+            JsonDocument document = JsonDocument.Parse(Login.GlobalConfig);
+            string formattedJson = JsonSerializer.Serialize(document, new JsonSerializerOptions { WriteIndented = true });
+
+            // Create a new TextBox
+            // Create a new MaterialMultiLineTextBox
+            MaterialSkin.Controls.MaterialMultiLineTextBox multilineTextField = new MaterialSkin.Controls.MaterialMultiLineTextBox
             {
-                Location = new Point(20, 20), // Adjust these values to position the CheckBox
-                Text = "Save user key locally",
-                AutoSize = true // Set AutoSize to true so the CheckBox adjusts its size based on the text
+                Location = new Point(10, 20), // Adjust these values to position the TextBox
+                Size = new Size(500, 430), // Adjust these values to change the size of the TextBox
+                Multiline = true, // Set Multiline to true
+                //ScrollBars = ScrollBars.Both, // Add both vertical and horizontal scrollbars
+                Text = formattedJson // Set the Text to the GlobalConfig
             };
 
-            // Add the CheckBox to the "Settings" tab
-            this.materialTabControl.TabPages[2].Controls.Add(saveUserKeyCheckBox);
+            // Add the MaterialMultiLineTextBox to the "Configuration" tab
+            this.materialTabControl.TabPages[1].Controls.Add(multilineTextField);
+
+            // Create a new Button for loading the configuration
+            MaterialSkin.Controls.MaterialButton loadConfigButton = new MaterialSkin.Controls.MaterialButton
+            {
+                Location = new Point(multilineTextField.Location.X + multilineTextField.Width + 25, multilineTextField.Location.Y), // Position the Button to the right of the TextBox
+                Size = new Size(100, 36), // Adjust these values to change the size of the Button
+                Text = "Load Config" // Set the Text to "Load Config"
+            };
+
+            loadConfigButton.Click += async (sender, e) =>
+            {
+                try
+                {
+                    // Make an API call to Constelia AI to get the updated configuration
+                    HttpClient client = new HttpClient();
+                    HttpResponseMessage response = await client.GetAsync($"https://constelia.ai/api.php?key={userkey}&cmd=getConfiguration"); // Replace with the actual API endpoint
+                            
+                    if (response.IsSuccessStatusCode)
+                    {
+                        string config = await response.Content.ReadAsStringAsync();
+
+                        // Parse the JSON and format it
+                        JsonDocument document = JsonDocument.Parse(config);
+                        string formattedJson = JsonSerializer.Serialize(document, new JsonSerializerOptions { WriteIndented = true });
+
+                        // Update the TextBox with the new configuration
+                        multilineTextField.Text = formattedJson;
+                    }
+                    else
+                    {
+                        MessageBox.Show("Failed to load the configuration.");
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"An error occurred: {ex.Message}");
+                }
+            };
+
+            // Add the Button to the "Configuration" tab
+            this.materialTabControl.TabPages[1].Controls.Add(loadConfigButton);
+
+            // Create a new Button for saving the configuration
+            MaterialSkin.Controls.MaterialButton saveConfigButton = new MaterialSkin.Controls.MaterialButton
+            {
+                Location = new Point(multilineTextField.Location.X + multilineTextField.Width + 25, multilineTextField.Location.Y + loadConfigButton.Height + 10), // Position the Button below the Load Config Button
+                Size = new Size(100, 36), // Adjust these values to change the size of the Button
+                Text = "Save Config" // Set the Text to "Save Config"
+            };
+
+            saveConfigButton.Click += async (sender, e) =>
+            {
+                try
+                {
+                    // Get the configuration from the TextBox
+                    string config = multilineTextField.Text;
+
+                    // Create a new HttpClient
+                    HttpClient client = new HttpClient();
+
+                    // Create the content for the POST request
+                    StringContent content = new StringContent(config, Encoding.UTF8, "application/json");
+
+                    // Make a POST request to the Constelia AI API
+                    HttpResponseMessage response = await client.PostAsync($"https://constelia.ai/api.php?key={userkey}&cmd=setConfiguration", content); // Replace with the actual API endpoint
+
+                    if (response.IsSuccessStatusCode)
+                    {
+                        MessageBox.Show("Configuration saved successfully.");
+                    }
+                    else
+                    {
+                        MessageBox.Show($"Error: {response.StatusCode}");
+                    }
+                }
+                catch (Exception ex)
+                {
+                    // Display the error message
+                    MessageBox.Show($"An error occurred: {ex.Message}");
+                }
+            };
+
+            // Add the Button to the "Configuration" tab
+            this.materialTabControl.TabPages[1].Controls.Add(saveConfigButton);
+
+            // Create a new Button for resetting the configuration
+            int resetClickCount = 0;
+            MaterialSkin.Controls.MaterialButton resetConfigButton = new MaterialSkin.Controls.MaterialButton
+            {
+                Location = new Point(multilineTextField.Location.X + multilineTextField.Width + 25, multilineTextField.Location.Y + saveConfigButton.Height + loadConfigButton.Height + 20), // Position the Button below the Save Config Button
+                AutoSize = false,
+                Size = new Size(115, 36), // Adjust these values to change the size of the Button
+                Text = "Reset"
+            };
+
+            resetConfigButton.Click += async (sender, e) =>
+            {
+                // Increment the counter
+                resetClickCount++;
+
+                // Update the button text
+                resetConfigButton.Text = $"Reset ({resetClickCount})";
+
+                // Check if the counter has reached 5
+                if (resetClickCount >= 5)
+                {
+                    // Reset the configuration in the TextBox to the original configuration
+                    HttpClient client = new HttpClient();
+                    HttpResponseMessage response = await client.GetAsync($"https://constelia.ai/api.php?key={userkey}&cmd=resetConfiguration");
+
+                    if (response.IsSuccessStatusCode)
+                    {
+                        // Reset the counter
+                        resetClickCount = 0;
+
+                        // Change the button text
+                        resetConfigButton.Text = "Config Reset!";
+
+                        // Create a timer
+                        System.Windows.Forms.Timer timer = new System.Windows.Forms.Timer();
+                        timer.Interval = 3000; // Set the timer interval to 3 seconds
+
+                        // Add an event handler for the Tick event
+                        timer.Tick += (s, ea) =>
+                        {
+                            // Reset the button text
+                            resetConfigButton.Text = "Reset";
+
+                            // Stop the timer
+                            timer.Stop();
+                        };
+
+                        // Start the timer
+                        timer.Start();
+                    }
+                    else
+                    {
+                        MessageBox.Show("Failed to reset the config.");
+                    }
+                }
+            };
+
+            // Add the Button to the "Configuration" tab
+            this.materialTabControl.TabPages[1].Controls.Add(resetConfigButton);
+            
 
         }
     }
