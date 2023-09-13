@@ -22,7 +22,7 @@ local lucid_dreams = {
 function lucid_dreams.on_loaded( script, sessions )
 
     -- debug
-    fantasy.log( "downloading server" )
+    fantasy.log( "Downloading lucid_dreams.zip..." )
 
     -- get required modules module
     local http = fantasy.http() -- http module
@@ -33,7 +33,7 @@ function lucid_dreams.on_loaded( script, sessions )
 
     -- check if our downloaded file exists
     if not file:exists( lucid_dreams.file ) then
-        fantasy.log( "server failed to download" )
+        fantasy.log( "Download failed!" )
         return false
     end
 
