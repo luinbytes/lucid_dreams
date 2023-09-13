@@ -4,7 +4,10 @@ using MaterialSkin;
 using MaterialSkin.Controls;
 using System.Text.Json;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Web;
+using Newtonsoft.Json;
+using System.Data;
 
 namespace lucid_dreams
 {
@@ -30,6 +33,31 @@ namespace lucid_dreams
         private System.ComponentModel.IContainer components = null;
         private Label usernameLabel;
 
+        public class Script
+        {
+            public string Id { get; set; }
+            public string Software { get; set; }
+            public string Name { get; set; }
+            public string Author { get; set; }
+            public string Last_update { get; set; }
+            public string Update_notes { get; set; }
+            
+            [JsonPropertyName("script")]
+            public string ScriptContent { get; set; }
+            
+            public string Core { get; set; }
+            public string Forums { get; set; }
+            public string Library { get; set; }
+            public List<string> Team { get; set; }
+            public string Elapsed { get; set; }
+        }
+
+        public class ApiResponse
+        {
+            public List<Script> Scripts { get; set; }
+            // Add other properties if needed
+        }
+
         private void InitializeComponent()
         {
 
@@ -40,7 +68,7 @@ namespace lucid_dreams
             
             this.components = new System.ComponentModel.Container();
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(650, 500);
+            this.ClientSize = new System.Drawing.Size(850, 600);
             this.FormBorderStyle = FormBorderStyle.FixedSingle;
             this.MaximizeBox = false;
             this.Sizable = false;
@@ -52,16 +80,17 @@ namespace lucid_dreams
             // Tab Selector
             this.materialTabSelector.BaseTabControl = this.materialTabControl;
             this.materialTabSelector.Depth = 0;
+            this.materialTabControl.Dock = DockStyle.Fill;
             this.materialTabSelector.Location = new System.Drawing.Point(-10, 64);
             this.materialTabSelector.MouseState = MaterialSkin.MouseState.HOVER;
-            this.materialTabSelector.Size = new System.Drawing.Size(800, 28);
+            this.materialTabSelector.Size = new System.Drawing.Size(900, 28);
             this.materialTabSelector.TabIndex = 0;
 
             // Tab Control
             this.materialTabControl.Depth = 0;
-            this.materialTabControl.Location = new System.Drawing.Point(0, 84);
+            this.materialTabControl.Location = new System.Drawing.Point(10, 84);
             this.materialTabControl.MouseState = MaterialSkin.MouseState.HOVER;
-            this.materialTabControl.Size = new System.Drawing.Size(800, 452); // Adjust the width as needed
+            this.materialTabControl.Size = new System.Drawing.Size(900, 452); // Adjust the width as needed
             this.materialTabControl.ItemSize = new Size(20, 20); // Adjust these values to change the size of the tabs
             this.materialTabControl.TabIndex = 1;
 
@@ -69,6 +98,7 @@ namespace lucid_dreams
             this.materialTabControl.TabPages.Add(new TabPage("User Control"));
             this.materialTabControl.TabPages.Add(new TabPage("Configuration"));
             this.materialTabControl.TabPages.Add(new TabPage("Scripts"));
+            this.materialTabControl.TabPages.Add(new TabPage("Team"));
             this.materialTabControl.TabPages.Add(new TabPage("Settings"));
 
             // Add the controls to the form
@@ -82,14 +112,14 @@ namespace lucid_dreams
                 SizeMode = PictureBoxSizeMode.StretchImage // Set the SizeMode to StretchImage so the avatar fits in the PictureBox
             };
 
-            avatarPictureBox.Location = new Point(3, this.ClientSize.Height - avatarPictureBox.Height - 45);
+            avatarPictureBox.Location = new Point(3, this.ClientSize.Height - avatarPictureBox.Height - 30);
 
             this.materialTabControl.TabPages[0].Controls.Add(avatarPictureBox);
 
             // Create a new Label
             Label usernameLabel = new Label
             {
-                Location = new Point(avatarPictureBox.Width + 5, this.ClientSize.Height - avatarPictureBox.Height + 35), // Adjust these values to position the Label
+                Location = new Point(avatarPictureBox.Width + 5, this.ClientSize.Height - avatarPictureBox.Height + 55), // Adjust these values to position the Label
                 Text = $"Welcome {username}!", // Set the Text to the username
                 AutoSize = true // Set AutoSize to true so the Label adjusts its size based on the text
             };
@@ -100,7 +130,7 @@ namespace lucid_dreams
             // Create a new Panel that will act as the GroupBox
             Panel forumStatsPanel = new Panel
             {
-                Location = new Point(10, 20), // Adjust these values to position the Panel
+                Location = new Point(10, 40), // Adjust these values to position the Panel
                 Size = new Size(200, 120), // Adjust these values to change the size of the Panel
                 BorderStyle = BorderStyle.FixedSingle // Set the BorderStyle to FixedSingle to mimic the border of a GroupBox
             };
@@ -181,7 +211,7 @@ namespace lucid_dreams
             // Create a new MaterialComboBox for the test options
             MaterialSkin.Controls.MaterialComboBox testOptionsComboBox = new MaterialSkin.Controls.MaterialComboBox
             {
-                Location = new Point(430, 400), // Adjust these values to position the ComboBox
+                Location = new Point(625, 520), // Adjust these values to position the ComboBox
                 AutoResize = true,
                 Size = new Size(200, 26), // Adjust these values to change the size of the ComboBox
                 AutoCompleteSource = AutoCompleteSource.ListItems, // Set the AutoCompleteSource to ListItems so the ComboBox suggests items as the user types
@@ -260,14 +290,14 @@ namespace lucid_dreams
             
 
             JsonDocument document = JsonDocument.Parse(Login.GlobalConfig);
-            string formattedJson = JsonSerializer.Serialize(document, new JsonSerializerOptions { WriteIndented = true });
+            string formattedJson = System.Text.Json.JsonSerializer.Serialize(document, new JsonSerializerOptions { WriteIndented = true });
 
             // Create a new TextBox
             // Create a new MaterialMultiLineTextBox
             MaterialSkin.Controls.MaterialMultiLineTextBox multilineTextField = new MaterialSkin.Controls.MaterialMultiLineTextBox
             {
-                Location = new Point(10, 20), // Adjust these values to position the TextBox
-                Size = new Size(500, 430), // Adjust these values to change the size of the TextBox
+                Location = new Point(10, 40), // Adjust these values to position the TextBox
+                Size = new Size(680, 520), // Adjust these values to change the size of the TextBox
                 Multiline = true, // Set Multiline to true
                 //ScrollBars = ScrollBars.Both, // Add both vertical and horizontal scrollbars
                 Text = formattedJson // Set the Text to the GlobalConfig
@@ -279,7 +309,7 @@ namespace lucid_dreams
             // Create a new Button for loading the configuration
             MaterialSkin.Controls.MaterialButton loadConfigButton = new MaterialSkin.Controls.MaterialButton
             {
-                Location = new Point(multilineTextField.Location.X + multilineTextField.Width + 25, multilineTextField.Location.Y), // Position the Button to the right of the TextBox
+                Location = new Point(multilineTextField.Location.X + multilineTextField.Width + 30, multilineTextField.Location.Y), // Position the Button to the right of the TextBox
                 Size = new Size(100, 36), // Adjust these values to change the size of the Button
                 Text = "Load Config" // Set the Text to "Load Config"
             };
@@ -298,7 +328,7 @@ namespace lucid_dreams
 
                         // Parse the JSON and format it
                         JsonDocument document = JsonDocument.Parse(config);
-                        string formattedJson = JsonSerializer.Serialize(document, new JsonSerializerOptions { WriteIndented = true });
+                        string formattedJson = System.Text.Json.JsonSerializer.Serialize(document, new JsonSerializerOptions { WriteIndented = true });
 
                         // Update the TextBox with the new configuration
                         multilineTextField.Text = formattedJson;
@@ -320,7 +350,7 @@ namespace lucid_dreams
             // Create a new Button for saving the configuration
             MaterialSkin.Controls.MaterialButton saveConfigButton = new MaterialSkin.Controls.MaterialButton
             {
-                Location = new Point(multilineTextField.Location.X + multilineTextField.Width + 25, multilineTextField.Location.Y + loadConfigButton.Height + 10), // Position the Button below the Load Config Button
+                Location = new Point(multilineTextField.Location.X + multilineTextField.Width + 30, multilineTextField.Location.Y + loadConfigButton.Height + 10), // Position the Button below the Load Config Button
                 Size = new Size(100, 36), // Adjust these values to change the size of the Button
                 Text = "Save Config" // Set the Text to "Save Config"
             };
@@ -367,7 +397,7 @@ namespace lucid_dreams
             int resetClickCount = 0;
             MaterialSkin.Controls.MaterialButton resetConfigButton = new MaterialSkin.Controls.MaterialButton
             {
-                Location = new Point(multilineTextField.Location.X + multilineTextField.Width + 25, multilineTextField.Location.Y + saveConfigButton.Height + loadConfigButton.Height + 20), // Position the Button below the Save Config Button
+                Location = new Point(multilineTextField.Location.X + multilineTextField.Width + 30, multilineTextField.Location.Y + saveConfigButton.Height + loadConfigButton.Height + 20), // Position the Button below the Save Config Button
                 AutoSize = false,
                 Size = new Size(115, 36), // Adjust these values to change the size of the Button
                 Text = "Reset"
@@ -426,7 +456,7 @@ namespace lucid_dreams
             // Create a new Button for FAQ
             MaterialSkin.Controls.MaterialButton faqConfigButton = new MaterialSkin.Controls.MaterialButton
             {
-                Location = new Point(multilineTextField.Location.X + multilineTextField.Width + 25, 400), // Position the Button below the Reset Config Button
+                Location = new Point(multilineTextField.Location.X + multilineTextField.Width + 30, 520), // Position the Button below the Reset Config Button
                 AutoSize = false,
                 Size = new Size(115, 36), // Adjust these values to change the size of the Button
                 Text = "FAQ" // Set the Text to "FAQ"
@@ -442,7 +472,7 @@ namespace lucid_dreams
 
             MaterialSkin.Controls.MaterialButton generateConfigButton = new MaterialSkin.Controls.MaterialButton
             {
-                Location = new Point(multilineTextField.Location.X + multilineTextField.Width + 25, 350), // Position the Button below the Reset Config Button
+                Location = new Point(multilineTextField.Location.X + multilineTextField.Width + 30, 475), // Position the Button below the Reset Config Button
                 AutoSize = false,
                 Size = new Size(115, 36), // Adjust these values to change the size of the Button
                 Text = "Gen Config" // Set the Text to "FAQ"
@@ -485,7 +515,207 @@ namespace lucid_dreams
 
             // Add the Button to the "Configuration" tab
             this.materialTabControl.TabPages[1].Controls.Add(generateConfigButton);
+            
+            List<Script> scripts = null;
+            this.materialTabControl.Selected += async (sender, e) =>
+            {
+                if (e.TabPageIndex == 2) // Replace 1 with the index of the "Scripts" tab
+                {
+                    try
+                    {
+                        HttpClient client = new HttpClient();
+                        HttpResponseMessage response = await client.GetAsync($"https://constelia.ai/api.php?key={userkey}&cmd=getAllScripts");
+                        HttpResponseMessage response2 = await client.GetAsync($"https://constelia.ai/api.php?key={userkey}&cmd=getMember&scripts");
 
+                        if (response.IsSuccessStatusCode && response2.IsSuccessStatusCode)
+                        {
+                            string scriptsJson = await response.Content.ReadAsStringAsync();
+                            string activeScriptsJson = await response2.Content.ReadAsStringAsync();
+
+                            ApiResponse responseObj = JsonConvert.DeserializeObject<ApiResponse>(activeScriptsJson);
+
+                            // Parse the JSON into a list of scripts
+                            List<Script> scripts = JsonConvert.DeserializeObject<List<Script>>(scriptsJson);
+                            List<Script> activeScripts = responseObj.Scripts;
+                            this.materialTabControl.TabPages[2].Dock = DockStyle.Fill;
+                            // Create a new DataGridView and set its properties
+                            DataGridView scriptsDataGridView = new DataGridView
+                            {
+                                Location = new Point(0, 30), // Adjust these values to position the DataGridView
+                                Size = new Size(860, 540), // Adjust these values to change the size of the DataGridView
+                                AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells,
+                                ReadOnly = true,
+                                AllowUserToAddRows = false,
+                                BackgroundColor = Color.White,
+                                DefaultCellStyle = new DataGridViewCellStyle
+                                {
+                                    Font = new Font("Roboto", 12),
+                                    ForeColor = Color.White,
+                                    BackColor = Color.FromArgb(88, 88, 88)
+                                },
+                                ColumnHeadersDefaultCellStyle = new DataGridViewCellStyle
+                                {
+                                    Font = new Font("Roboto", 9, FontStyle.Bold),
+                                    ForeColor = Color.White,
+                                    BackColor = Color.FromArgb(173, 20, 87) // Indigo 500
+                                },
+                                RowHeadersVisible = false,
+                                GridColor = Color.FromArgb(189, 189, 189), // Gray 400
+                                EnableHeadersVisualStyles = false,
+                                //Dock = DockStyle.Fill
+                            };
+
+                            // Add columns to the DataGridView
+                            scriptsDataGridView.Columns.Add("Id", "ID");
+                            scriptsDataGridView.Columns.Add("Name", "Name");
+                            scriptsDataGridView.Columns.Add("Author", "Author");
+                            scriptsDataGridView.Columns.Add("LastUpdate", "Last Updated");
+
+                            // Set the AutoSizeColumnsMode property for all columns
+                            scriptsDataGridView.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells;
+
+                            // Set the AutoSizeMode property for the last column
+                            scriptsDataGridView.Columns[scriptsDataGridView.Columns.Count - 1].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+
+                            // Add a checkbox column for the status
+                            DataGridViewCheckBoxColumn statusColumn = new DataGridViewCheckBoxColumn
+                            {
+                                HeaderText = "Active",
+                                Name = "Active",
+                                SortMode = DataGridViewColumnSortMode.Automatic
+                            };
+                            scriptsDataGridView.Columns.Add(statusColumn);
+
+                            foreach (var script in scripts)
+                            {
+                                bool isActive = activeScripts.Any(activeScript => activeScript.Id == script.Id);
+
+                                // Convert Unix time to DateTime
+                                DateTime lastUpdate = DateTimeOffset.FromUnixTimeSeconds(long.Parse(script.Last_update)).DateTime;
+
+                                // Add a row to the DataGridView for each script
+                                scriptsDataGridView.Rows.Add(script.Id, script.Name, script.Author, lastUpdate, isActive);
+                            }
+
+                            // Create a new DataGridViewButtonColumn
+                            DataGridViewButtonColumn moreInfoButtonColumn = new DataGridViewButtonColumn
+                            {
+                                Name = "MoreInfo",
+                                HeaderText = "Info",
+                                Text = "Info",
+                                UseColumnTextForButtonValue = true
+                            };
+
+                            // Add the DataGridViewButtonColumn to the DataGridView
+                            scriptsDataGridView.Columns.Add(moreInfoButtonColumn);
+
+                            // Create a new DataGridViewButtonColumn
+                            DataGridViewButtonColumn forumButtonColumn = new DataGridViewButtonColumn
+                            {
+                                Name = "Forum",
+                                HeaderText = "Forum",
+                                Text = "Forum",
+                                UseColumnTextForButtonValue = true
+                            };
+
+                            // Add the DataGridViewButtonColumn to the DataGridView
+                            scriptsDataGridView.Columns.Add(forumButtonColumn);
+
+                            // Handle the CellClick event to perform an action when the button is clicked
+                            scriptsDataGridView.CellClick += (sender, e) =>
+                            {
+                                // Check if the clicked cell is in the "Forum" column
+                                if (scriptsDataGridView.Columns[e.ColumnIndex].Name == "Forum")
+                                {
+                                    // Get the ID of the script in the clicked row
+                                    string scriptId = scriptsDataGridView.Rows[e.RowIndex].Cells["Id"].Value.ToString();
+
+                                    // Find the script with the given ID
+                                    Script script = scripts.Find(s => s.Id == scriptId);
+
+                                    // Open the script's forum URL in the default browser
+                                    System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo
+                                    {
+                                        FileName = script.Forums,
+                                        UseShellExecute = true
+                                    });
+                                }
+                            };
+
+                            // Handle the CellClick event to perform an action when the button is clicked
+                            scriptsDataGridView.CellClick += (sender, e) =>
+                            {
+                                // Check if the clicked cell is in the "MoreInfo" column
+                                if (scriptsDataGridView.Columns[e.ColumnIndex].Name == "MoreInfo")
+                                {
+                                    // Get the ID of the script in the clicked row
+                                    string scriptId = scriptsDataGridView.Rows[e.RowIndex].Cells["Id"].Value.ToString();
+
+                                    // Find the script with the given ID
+                                    Script script = scripts.Find(s => s.Id == scriptId);
+                                    DateTime lastUpdate = DateTimeOffset.FromUnixTimeSeconds(long.Parse(script.Last_update)).DateTime;
+                                    // Create the message with the script info
+                                    string message = $"Name: {script.Name}\n" +
+                                                    $"Author: {script.Author}\n" +
+                                                    $"Last Updated: {lastUpdate}\n" +
+                                                    $"Is Core Script: {script.Core}\n" +
+                                                    $"Is Library Script: {script.Library}\n" +
+                                                    $"Elapsed Time: {script.Elapsed}\n\n" +
+                                                    $"Update Notes: {script.Update_notes}";
+
+                                    // Show the message box with the script info
+                                    MessageBox.Show(message, "Script Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                                }
+                            };
+
+                            // Handle the CellContentClick event to perform an action when a checkbox is clicked
+                            scriptsDataGridView.CellContentClick += async (sender, e) =>
+                            {
+                                
+                                if (e.RowIndex >= 0)
+                                {
+                                // Check if the clicked cell is in the "Enabled" column
+                                    if (scriptsDataGridView.Columns[e.ColumnIndex].Name == "Active")
+                                    {
+                                        // Get the ID of the script in the clicked row
+                                        string scriptId = scriptsDataGridView.Rows[e.RowIndex].Cells["Id"].Value.ToString();
+
+                                        // Find the script with the given ID
+                                        Script script = scripts.Find(s => s.Id == scriptId);
+
+                                        // Get the new status of the script
+                                        bool isEnabled = !(bool)scriptsDataGridView.Rows[e.RowIndex].Cells[e.ColumnIndex].Value;
+
+                                        // Update the checkbox value manually
+                                        scriptsDataGridView.Rows[e.RowIndex].Cells[e.ColumnIndex].Value = isEnabled;
+
+                                        // Perform the API call
+                                        HttpClient client = new HttpClient();
+                                        HttpResponseMessage response = await client.GetAsync($"https://constelia.ai/api.php?key={userkey}&cmd=toggleScriptStatus&id={scriptId}");
+
+                                        if (!response.IsSuccessStatusCode)
+                                        {
+                                            // Display an error message if the API call failed
+                                            MessageBox.Show($"Failed to set the status of the script. Error: {response.StatusCode}");
+                                        }
+                                    }
+                                }
+                            };
+
+                            // Add the DataGridView to the "Scripts" tab
+                            this.materialTabControl.TabPages[2].Controls.Add(scriptsDataGridView);
+                        }
+                        else
+                        {
+                            MessageBox.Show("Failed to load the scripts.");
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show($"An error occurred: {ex.Message}");
+                    }
+                }
+            };
         }
     }
 }

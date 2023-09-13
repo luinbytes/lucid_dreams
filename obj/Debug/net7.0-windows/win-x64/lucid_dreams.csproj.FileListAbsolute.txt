@@ -474,3 +474,4 @@ C:\Users\crims\Documents\GitHub\lucid_dreams\obj\Debug\net7.0-windows\win-x64\re
 C:\Users\crims\Documents\GitHub\lucid_dreams\obj\Debug\net7.0-windows\win-x64\lucid_dreams.pdb
 C:\Users\crims\Documents\GitHub\lucid_dreams\obj\Debug\net7.0-windows\win-x64\lucid_dreams.genruntimeconfig.cache
 C:\Users\crims\Documents\GitHub\lucid_dreams\obj\Debug\net7.0-windows\win-x64\ref\lucid_dreams.dll
+C:\Users\crims\Documents\GitHub\lucid_dreams\bin\Debug\net7.0-windows\win-x64\Newtonsoft.Json.dll

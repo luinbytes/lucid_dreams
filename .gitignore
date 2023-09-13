@@ -1,0 +1,6 @@
+# Ignore .exe files
+*.exe
+
+# Ignore directories created by the build and publish processes
+/build/
+/publish/
