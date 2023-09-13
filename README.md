@@ -45,6 +45,7 @@
 ## About The Project
 
 AIO UI for constelia.ai written in C#.
+Special thanks to typedef for the API, Windows for the forms, Material for the skin and ChatGPT for the code B)
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
