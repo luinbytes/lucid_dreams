@@ -1,11 +1,14 @@
 {
   "version": 2,
-  "dgSpecHash": "R+P/85w+rXuJW3QbU9vI/j7cT92V4mE5I1cHXuUwqlFSp8YRrsaC7QwF7yK1MZ5XeHhAeSSjNSjrwyCJzMwejA==",
+  "dgSpecHash": "dr7RpC202uPV5ZUI/XXXCL9BnWj9lncX3kpE5gINDPFleBpPfChh3zNZYPAGJK3arAG+NDsJK9+ebs3/TKLVhw==",
   "success": true,
   "projectFilePath": "C:\\Users\\crims\\Documents\\GitHub\\lucid_dreams\\lucid_dreams.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\crims\\.nuget\\packages\\materialskin.2\\2.3.1\\materialskin.2.2.3.1.nupkg.sha512",
-    "C:\\Users\\crims\\.nuget\\packages\\newtonsoft.json\\13.0.3\\newtonsoft.json.13.0.3.nupkg.sha512"
+    "C:\\Users\\crims\\.nuget\\packages\\newtonsoft.json\\13.0.3\\newtonsoft.json.13.0.3.nupkg.sha512",
+    "C:\\Users\\crims\\.nuget\\packages\\microsoft.netcore.app.runtime.win-x64\\7.0.10\\microsoft.netcore.app.runtime.win-x64.7.0.10.nupkg.sha512",
+    "C:\\Users\\crims\\.nuget\\packages\\microsoft.windowsdesktop.app.runtime.win-x64\\7.0.10\\microsoft.windowsdesktop.app.runtime.win-x64.7.0.10.nupkg.sha512",
+    "C:\\Users\\crims\\.nuget\\packages\\microsoft.aspnetcore.app.runtime.win-x64\\7.0.10\\microsoft.aspnetcore.app.runtime.win-x64.7.0.10.nupkg.sha512"
   ],
   "logs": []
 }

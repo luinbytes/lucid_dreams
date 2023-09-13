@@ -55,7 +55,6 @@ namespace lucid_dreams
         public class ApiResponse
         {
             public List<Script> Scripts { get; set; }
-            // Add other properties if needed
         }
 
         private void InitializeComponent()
@@ -90,125 +89,112 @@ namespace lucid_dreams
             this.materialTabControl.Depth = 0;
             this.materialTabControl.Location = new System.Drawing.Point(10, 84);
             this.materialTabControl.MouseState = MaterialSkin.MouseState.HOVER;
-            this.materialTabControl.Size = new System.Drawing.Size(900, 452); // Adjust the width as needed
-            this.materialTabControl.ItemSize = new Size(20, 20); // Adjust these values to change the size of the tabs
+            this.materialTabControl.Size = new System.Drawing.Size(900, 452);
+            this.materialTabControl.ItemSize = new Size(20, 20);
             this.materialTabControl.TabIndex = 1;
 
-            // Tabs
             this.materialTabControl.TabPages.Add(new TabPage("User Control"));
             this.materialTabControl.TabPages.Add(new TabPage("Configuration"));
             this.materialTabControl.TabPages.Add(new TabPage("Scripts"));
             this.materialTabControl.TabPages.Add(new TabPage("Team"));
             this.materialTabControl.TabPages.Add(new TabPage("Settings"));
 
-            // Add the controls to the form
             this.Controls.Add(this.materialTabSelector);
             this.Controls.Add(this.materialTabControl);
 
             PictureBox avatarPictureBox = new PictureBox
             {
-                Size = new Size(100, 100), // Adjust these values to change the size of the PictureBox
-                ImageLocation = avatarURL, // Set the ImageLocation to the URL of the avatar
-                SizeMode = PictureBoxSizeMode.StretchImage // Set the SizeMode to StretchImage so the avatar fits in the PictureBox
+                Size = new Size(100, 100),
+                ImageLocation = avatarURL,
+                SizeMode = PictureBoxSizeMode.StretchImage
             };
 
             avatarPictureBox.Location = new Point(3, this.ClientSize.Height - avatarPictureBox.Height - 30);
 
             this.materialTabControl.TabPages[0].Controls.Add(avatarPictureBox);
 
-            // Create a new Label
             Label usernameLabel = new Label
             {
-                Location = new Point(avatarPictureBox.Width + 5, this.ClientSize.Height - avatarPictureBox.Height + 55), // Adjust these values to position the Label
-                Text = $"Welcome {username}!", // Set the Text to the username
-                AutoSize = true // Set AutoSize to true so the Label adjusts its size based on the text
+                Location = new Point(avatarPictureBox.Width + 5, this.ClientSize.Height - avatarPictureBox.Height + 55),
+                Text = $"Welcome {username}!",
+                AutoSize = true
             };
-
-            // Add the Label to the "User Control" tab
+            
             this.materialTabControl.TabPages[0].Controls.Add(usernameLabel);
-
-            // Create a new Panel that will act as the GroupBox
+            
             Panel forumStatsPanel = new Panel
             {
-                Location = new Point(10, 40), // Adjust these values to position the Panel
-                Size = new Size(200, 120), // Adjust these values to change the size of the Panel
-                BorderStyle = BorderStyle.FixedSingle // Set the BorderStyle to FixedSingle to mimic the border of a GroupBox
+                Location = new Point(10, 40),
+                Size = new Size(200, 120),
+                BorderStyle = BorderStyle.FixedSingle
             };
 
-            // Create a new Label for the title of the GroupBox
             Label forumStatsLabel = new Label
             {
-                Location = new Point(0, -2), // Adjust these values to position the Label
+                Location = new Point(0, -2),
                 Text = "Forum Stats",
                 BackColor = Color.Gray,
-                AutoSize = true // Set AutoSize to true so the Label adjusts its size based on the text
+                AutoSize = true
             };
 
             forumStatsPanel.Controls.Add(forumStatsLabel);
 
             Label unreadConvLabel = new Label
             {
-                Location = new Point(5, 20), // Adjust these values to position the Label
-                Text = $"Unread Messages: {unreadConversations}", // Set the Text to the FID
-                AutoSize = true // Set AutoSize to true so the Label adjusts its size based on the text
+                Location = new Point(5, 20),
+                Text = $"Unread Messages: {unreadConversations}",
+                AutoSize = true
             };
 
             forumStatsPanel.Controls.Add(unreadConvLabel);
 
             Label unreadAlertLabel = new Label
             {
-                Location = new Point(5, 35), // Adjust these values to position the Label
-                Text = $"Unread Messages: {unreadAlerts}", // Set the Text to the FID
-                AutoSize = true // Set AutoSize to true so the Label adjusts its size based on the text
+                Location = new Point(5, 35),
+                Text = $"Unread Messages: {unreadAlerts}",
+                AutoSize = true
             };
 
-            // Add the Label to the forumStatsPanel
             forumStatsPanel.Controls.Add(unreadAlertLabel);
 
             Label scoreLabel = new Label
             {
-                Location = new Point(5, 50), // Adjust these values to position the Label
-                Text = $"Score: {score}", // Set the Text to the FID
-                AutoSize = true // Set AutoSize to true so the Label adjusts its size based on the text
+                Location = new Point(5, 50),
+                Text = $"Score: {score}",
+                AutoSize = true
             };
 
-            // Add the Label to the forumStatsPanel
             forumStatsPanel.Controls.Add(scoreLabel);
 
             Label postsLabel = new Label
             {
-                Location = new Point(5, 65), // Adjust these values to position the Label
-                Text = $"Posts: {posts}", // Set the Text to the FID
-                AutoSize = true // Set AutoSize to true so the Label adjusts its size based on the text
+                Location = new Point(5, 65),
+                Text = $"Posts: {posts}",
+                AutoSize = true
             };
 
-            // Add the Label to the forumStatsPanel
             forumStatsPanel.Controls.Add(postsLabel);
 
             Label fidLabel = new Label
             {
-                Location = new Point(5, 80), // Adjust these values to position the Label
-                Text = $"Fantasy ID: {fid}", // Set the Text to the FID
-                AutoSize = true // Set AutoSize to true so the Label adjusts its size based on the text
+                Location = new Point(5, 80),
+                Text = $"Fantasy ID: {fid}",
+                AutoSize = true
             };
 
-            // Add the Label to the forumStatsPanel
             forumStatsPanel.Controls.Add(fidLabel);
 
             Label regLabel = new Label
             {
-                Location = new Point(5, 95), // Adjust these values to position the Label
-                Text = $"Registered: {registerDate}", // Set the Text to the FID
-                AutoSize = true // Set AutoSize to true so the Label adjusts its size based on the text
+                Location = new Point(5, 95),
+                Text = $"Registered: {registerDate}",
+                AutoSize = true
             };
 
-            // Add the Label to the forumStatsPanel
             forumStatsPanel.Controls.Add(regLabel);
 
-            // Add the Panel to the "User Control" tab
             this.materialTabControl.TabPages[0].Controls.Add(forumStatsPanel);
 
-            // Create a new MaterialComboBox for the test options
             MaterialSkin.Controls.MaterialComboBox testOptionsComboBox = new MaterialSkin.Controls.MaterialComboBox
             {
                 Location = new Point(625, 520), // Adjust these values to position the ComboBox
