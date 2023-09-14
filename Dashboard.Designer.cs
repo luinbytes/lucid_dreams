@@ -48,7 +48,7 @@ namespace lucid_dreams
             public string Core { get; set; }
             public string Forums { get; set; }
             public string Library { get; set; }
-            public List<string> Team { get; set; }
+            //public List<string> Team { get; set; }
             public string Elapsed { get; set; }
         }
 
