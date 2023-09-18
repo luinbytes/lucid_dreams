@@ -1,24 +1,4 @@
-<!-- Improved compatibility of back to top link: See: https://github.com/othneildrew/Best-README-Template/pull/73 -->
 <a name="readme-top"></a>
-<!--
-*** Thanks for checking out the Best-README-Template. If you have a suggestion
-*** that would make this better, please fork the repo and create a pull request
-*** or simply open an issue with the tag "enhancement".
-*** Don't forget to give the project a star!
-*** Thanks again! Now go create something AMAZING! :D
--->
-
-
-
-<!-- PROJECT SHIELDS -->
-<!--
-*** I'm using markdown "reference style" links for readability.
-*** Reference links are enclosed in brackets [ ] instead of parentheses ( ).
-*** See the bottom of this document for the declaration of the reference variables
-*** for contributors-url, forks-url, etc. This is an optional, concise syntax you may use.
-*** https://www.markdownguide.org/basic-syntax/#reference-style-links
--->
-
 
 
 
@@ -67,6 +47,32 @@ Don't forget to give the project a star! Thanks again!
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
+
+
+<!-- HOW TO BUILD -->
+## How to build
+
+Follow these steps to build the project:
+
+1. **Install Visual Studio Code**: Download and install Visual Studio Code from the [official website](https://code.visualstudio.com/).
+
+2. **Install .NET Core SDK**: Download and install the .NET Core SDK from the [official website](https://dotnet.microsoft.com/download).
+
+3. **Clone the Repository**: Clone the project repository to your local machine using Git. You can do this by running the following command in your terminal: `git clone https://github.com/luinbytes/lucid_dreams`
+
+4. **Open the Project in VS Code**: Open Visual Studio Code, click on `File > Open Folder` and select the folder of the cloned repository.
+
+5. **Restore NuGet Packages**: Open the terminal in VS Code (`View > Terminal`) and navigate to the project's directory. Run the following command to restore the NuGet packages: `dotnet restore`
+
+6. **Build the Project**: Still in the terminal, run the following command to build the project: `dotnet build`
+
+
+7. **Run the Project**: Finally, run the project with the following command: `dotnet run`
+
+
+Please note that this project seems to be a Windows Forms application, which is not fully supported in Visual Studio Code. For full support (including designer support), consider using Visual Studio instead.
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 
 <!-- CONTACT -->
