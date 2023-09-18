@@ -70,7 +70,7 @@ Follow these steps to build the project:
 7. **Run the Project**: Finally, run the project with the following command: `dotnet run`
 
 
-Please note that this project seems to be a Windows Forms application, which is not fully supported in Visual Studio Code. For full support (including designer support), consider using Visual Studio instead.
+Please note that this project seems to be a Windows Forms application, which is not fully supported in Visual Studio Code. For full support (including designer support), consider using Visual Studio instead. I'm just a masochist and enjoy making winforms without a nice click ui.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
