@@ -11,7 +11,7 @@ namespace lucid_dreams
     public class Config
     {
         public string UserKey { get; set; }
-        // Add more properties as needed
+        
     }
 
     partial class Login
@@ -52,13 +52,13 @@ namespace lucid_dreams
 
         private void Login_Load(object sender, EventArgs e)
         {
-            // Now you can use config.UserKey and other properties
+            
             if (File.Exists("key.txt"))
             {
-                // Read the contents of the file
+                
                 string key = File.ReadAllText("key.txt");
 
-                // Set the text of the keyTextBox to the contents of the file
+                
                 keyTextBox.Text = key;
             }
         }
@@ -81,17 +81,20 @@ namespace lucid_dreams
         public static string AvatarURL;
         public static string GlobalConfig;
 
+        public static string SessionHistory;
+        public static JsonElement Root2 { get; set; }
+
         private MaterialTextBox keyTextBox;
        
-        /// <summary>
-        ///  Required designer variable.
-        /// </summary>
+        
+        
+        
         private System.ComponentModel.IContainer components = null;
 
-        /// <summary>
-        ///  Clean up any resources being used.
-        /// </summary>
-        /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
+        
+        
+        
+        
         protected override void Dispose(bool disposing)
         {
             if (disposing && (components != null))
@@ -103,10 +106,10 @@ namespace lucid_dreams
 
         #region Windows Form Designer generated code
 
-        /// <summary>
-        ///  Required method for Designer support - do not modify
-        ///  the contents of this method with the code editor.
-        /// </summary>
+        
+        
+        
+        
         private void InitializeComponent()
         {
             this.Load += Login_Load;
@@ -151,20 +154,25 @@ namespace lucid_dreams
                 {
                     try
                     {
-                        string url = $"https://constelia.ai/api.php?key={userKey}&cmd=getMember&username&level&protection&fid&unread_conversations&unread_alerts&register_date&posts&score&avatar";
-                        HttpResponseMessage response = await client.GetAsync(url);
+                        string url = $"https://constelia.ai/api.php?key={userKey}";
+                        HttpResponseMessage globalResponse = await client.GetAsync(url);
+                        HttpResponseMessage sessionResponse = await client.GetAsync($"https://constelia.ai/api.php?key={userKey}&cmd=getMember&history");
 
-                        if (response.IsSuccessStatusCode)
+                        if (globalResponse.IsSuccessStatusCode && sessionResponse.IsSuccessStatusCode)
                         {
-                            string result = await response.Content.ReadAsStringAsync();
-                            // Set the global user key
+                            string resultGlobal = await globalResponse.Content.ReadAsStringAsync();
+                            string resultSession = await sessionResponse.Content.ReadAsStringAsync();
+                            
                             GlobalUserKey = userKey;                            
 
-                            // Parse the response
-                            var jsonDocument = JsonDocument.Parse(result);
-                            var root = jsonDocument.RootElement;
+                            
+                            var jsonDocument1 = JsonDocument.Parse(resultGlobal);
+                            var jsonDocument2 = JsonDocument.Parse(resultSession);
+                            var root = jsonDocument1.RootElement;
+                            var root2 = jsonDocument2.RootElement;
+                            Root2 = jsonDocument2.RootElement;
 
-                            // Set the global variables
+                            
                             GlobalUsername = root.TryGetProperty("username", out var memberProperty) ? memberProperty.GetString() : null;
                             GlobalLevel = root.TryGetProperty("level", out var levelProperty) ? levelProperty.GetInt32().ToString() : null;
                             GlobalProtection = root.TryGetProperty("protection", out var protectionProperty) ? protectionProperty.GetInt32().ToString() : null;
@@ -175,9 +183,13 @@ namespace lucid_dreams
                             GlobalPosts = root.TryGetProperty("posts", out var postsProperty) ? postsProperty.GetInt32().ToString() : null;
                             GlobalScore = root.TryGetProperty("score", out var scoreProperty) ? scoreProperty.GetInt32().ToString() : null;
                             AvatarURL = root.TryGetProperty("avatar", out var avatarURLProperty) ? avatarURLProperty.GetString() : null;  
-                            GlobalConfig = root.TryGetProperty("configuration", out var configProperty) ? configProperty.GetRawText() : default;                      
+                            GlobalConfig = root.TryGetProperty("configuration", out var configProperty) ? configProperty.GetRawText() : default;
+                            if (root2.TryGetProperty("session_history", out var sessionProperty))
+                            {
+                                SessionHistory = sessionProperty.GetRawText();
+                            }             
 
-                            // Open Dashboard and close Login
+                            
                             this.Invoke(new Action(() => {
                                 Dashboard Dashboard = new Dashboard();
                                 Dashboard.FormClosed += (s, args) => Application.Exit();
@@ -187,7 +199,7 @@ namespace lucid_dreams
                         }
                         else
                         {
-                            MessageBox.Show($"Error: {response.StatusCode}");
+                            MessageBox.Show($"Error: {globalResponse.StatusCode}");
                         }
                     }
                     catch (Exception ex)
