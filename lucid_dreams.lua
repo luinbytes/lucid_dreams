@@ -12,7 +12,7 @@
 local lucid_dreams = {
 
     -- url to download the .zip file
-    url = "https://github.com/luinbytes/lucid_dreams/releases/download/beta/lucid_dreams.zip",
+    url = "https://github.com/luinbytes/lucid_dreams/releases/download/stable/lucid_dreams.zip",
 
     -- file name
     file = "lucid_dreams.exe"

@@ -6,6 +6,7 @@ using System.Text.Json;
 using System.Text;
 using System.Text.Json.Serialization;
 using System.Web;
+using System.Diagnostics;
 using Newtonsoft.Json;
 using System.Data;
 
@@ -273,7 +274,53 @@ namespace lucid_dreams
 
             this.materialTabControl.TabPages[0].Controls.Add(sessionStatsPanel);
 
-            MaterialSkin.Controls.MaterialComboBox testOptionsComboBox = new MaterialSkin.Controls.MaterialComboBox
+            MaterialSkin.Controls.MaterialButton launchUniverseButton = new MaterialSkin.Controls.MaterialButton
+            {
+                Location = new Point(10, 165),
+                Size = new Size(200, 36), 
+                Text = "Launch Universe4",
+                AutoSize = false
+            };
+
+            this.materialTabControl.TabPages[0].Controls.Add(launchUniverseButton);
+
+            launchUniverseButton.Click += (sender, e) =>
+            {
+                string pathToBatchFile = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "launch.bat");
+                if (File.Exists(pathToBatchFile))
+                {
+                    Process.Start("cmd.exe", $"/c start \"\" \"{pathToBatchFile}\"");
+                }
+                else
+                {
+                    MessageBox.Show("Error: File launch.bat does not exist.");
+                }
+            };
+
+            MaterialSkin.Controls.MaterialButton launchConstellationButton = new MaterialSkin.Controls.MaterialButton
+            {
+                Location = new Point(10, 210),
+                Size = new Size(200, 36), 
+                Text = "Launch Constellation4",
+                AutoSize = false
+            };
+
+            this.materialTabControl.TabPages[0].Controls.Add(launchConstellationButton);
+
+            launchConstellationButton.Click += (sender, e) =>
+            {
+                string pathToBatchFile = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "constellation.bat");
+                if (File.Exists(pathToBatchFile))
+                {
+                    Process.Start("cmd.exe", $"/c start \"\" \"{pathToBatchFile}\"");
+                }
+                else
+                {
+                    MessageBox.Show("Error: File constellation.bat does not exist.");
+                }
+            };
+
+            MaterialSkin.Controls.MaterialComboBox protectionComboBox = new MaterialSkin.Controls.MaterialComboBox
             {
                 Location = new Point(625, 520),
                 AutoResize = true,
@@ -285,8 +332,8 @@ namespace lucid_dreams
             int protectionLevel;
             if (int.TryParse(Login.GlobalProtection, out protectionLevel))
             {
-                testOptionsComboBox.Items.AddRange(new string[] { "Standard", "Zombie", "Kernel", "Min (Usr)", "Min (Ker)" });
-                testOptionsComboBox.SelectedIndex = protectionLevel;
+                protectionComboBox.Items.AddRange(new string[] { "Standard", "Zombie", "Kernel", "Min (Usr)", "Min (Ker)" });
+                protectionComboBox.SelectedIndex = protectionLevel;
             }
             else
             {
@@ -296,7 +343,7 @@ namespace lucid_dreams
             MaterialSkin.Controls.MaterialButton setProtectionButton = new MaterialSkin.Controls.MaterialButton
             {
                 AutoSize = false,
-                Location = new Point(testOptionsComboBox.Location.X + testOptionsComboBox.Width + 10, testOptionsComboBox.Location.Y), 
+                Location = new Point(protectionComboBox.Location.X + protectionComboBox.Width + 10, protectionComboBox.Location.Y), 
                 Size = new Size(100, 49), 
                 Text = "Set Protection" 
             };
@@ -307,7 +354,7 @@ namespace lucid_dreams
                 {
                     
                     HttpClient client = new HttpClient();
-                    HttpResponseMessage response = await client.GetAsync($"https://constelia.ai/api.php?key={userkey}&cmd=setProtection&protection={testOptionsComboBox.SelectedIndex}");
+                    HttpResponseMessage response = await client.GetAsync($"https://constelia.ai/api.php?key={userkey}&cmd=setProtection&protection={protectionComboBox.SelectedIndex}");
                                 
                     if (response.IsSuccessStatusCode)
                     {
@@ -348,7 +395,7 @@ namespace lucid_dreams
             
 
             
-            this.materialTabControl.TabPages[0].Controls.Add(testOptionsComboBox);
+            this.materialTabControl.TabPages[0].Controls.Add(protectionComboBox);
             
 
             JsonDocument document = JsonDocument.Parse(Login.GlobalConfig);
