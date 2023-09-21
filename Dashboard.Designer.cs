@@ -17,6 +17,8 @@ namespace lucid_dreams
     {
         string userkey = Login.GlobalUserKey;
         string username = Login.GlobalUsername;
+        string linkKey = Login.GlobalKeyLink;
+        string stopKey = Login.GlobalKeyStop;
         string level = Login.GlobalLevel;
         string protection = Login.GlobalProtection;
         string fid = Login.GlobalFid;
@@ -34,6 +36,39 @@ namespace lucid_dreams
 
         private System.ComponentModel.IContainer components = null;
         private Label usernameLabel;
+
+        Dictionary<int, string> keyCodes = new Dictionary<int, string>
+        {
+            { 1, "Left Click" },
+            { 2, "Right Click" },
+            { 3, "Cancel" },
+            { 4, "Middle Mouse" },
+            { 5, "Mouse 4" },
+            { 6, "Mouse 5" },
+            { 8, "Back" },
+            { 9, "Tab" },
+            { 12, "Clear" },
+            { 13, "Return" },
+            { 16, "Shift" },
+            { 17, "Control" },
+            { 18, "Menu" },
+            { 19, "Pause" },
+            { 20, "Caps Lock" },
+            { 21, "Kana" },
+            { 22 , "Undefined 1" },
+            { 23 , "IME Junja mode" },
+            { 24 , "IME Final mode" },
+            { 25 , "" },
+            { 26 , "" },
+            { 27 , "" },
+            { 28 , "" },
+            { 29 , "" },
+            { 30 , "" },
+            { 31 , "" },
+            { 32 , "" },
+            { 33 , "" },
+            { 34 , "" },
+        };
 
         public class Script
         {
@@ -319,6 +354,39 @@ namespace lucid_dreams
                     MessageBox.Show("Error: File constellation.bat does not exist.");
                 }
             };
+
+            MaterialSkin.Controls.MaterialTextBox linkKeyBindBox = new MaterialSkin.Controls.MaterialTextBox
+            {
+                Location = new Point(10, 400),
+                Size = new Size(200, 36),
+                ReadOnly = true,
+                Text = ($"{linkKey}")
+            };
+
+            linkKeyBindBox.KeyDown += (sender, e) =>
+            {
+                linkKeyBindBox.Text = Enum.GetName(typeof(Keys), e.KeyCode);
+                e.SuppressKeyPress = true;
+            };
+
+            linkKeyBindBox.MouseDown += (sender, e) =>
+            {
+                switch (e.Button)
+                {
+                    case MouseButtons.Left:
+                        linkKeyBindBox.Text = "VK_LBUTTON";
+                        break;
+                    case MouseButtons.Right:
+                        linkKeyBindBox.Text = "VK_RBUTTON";
+                        break;
+                    case MouseButtons.Middle:
+                        linkKeyBindBox.Text = "VK_MBUTTON";
+                        break;
+                    // Add more cases here if needed...
+                }
+            };
+
+            this.materialTabControl.TabPages[0].Controls.Add(linkKeyBindBox);
 
             MaterialSkin.Controls.MaterialComboBox protectionComboBox = new MaterialSkin.Controls.MaterialComboBox
             {

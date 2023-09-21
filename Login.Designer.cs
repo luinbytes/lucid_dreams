@@ -70,6 +70,8 @@ namespace lucid_dreams
 
         public static string GlobalUserKey;
         public static string GlobalUsername;
+        public static string GlobalKeyLink;
+        public static string GlobalKeyStop;
         public static string GlobalLevel;
         public static string GlobalProtection;
         public static string GlobalFid;
@@ -174,6 +176,8 @@ namespace lucid_dreams
 
                             
                             GlobalUsername = root.TryGetProperty("username", out var memberProperty) ? memberProperty.GetString() : null;
+                            GlobalKeyLink = root.TryGetProperty("key_link", out var linkProperty) ? linkProperty.GetInt32().ToString() : null;
+                            GlobalKeyStop = root.TryGetProperty("key_stop", out var stopProperty) ? stopProperty.GetInt32().ToString() : null;
                             GlobalLevel = root.TryGetProperty("level", out var levelProperty) ? levelProperty.GetInt32().ToString() : null;
                             GlobalProtection = root.TryGetProperty("protection", out var protectionProperty) ? protectionProperty.GetInt32().ToString() : null;
                             GlobalFid = root.TryGetProperty("fid", out var fidProperty) ? fidProperty.GetInt32().ToString() : null;
