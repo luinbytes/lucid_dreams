@@ -233,7 +233,6 @@ C:\Users\crims\Documents\GitHub\lucid_dreams\bin\Debug\net7.0-windows\win-x64\cr
 C:\Users\crims\Documents\GitHub\lucid_dreams\bin\Debug\net7.0-windows\win-x64\hostfxr.dll
 C:\Users\crims\Documents\GitHub\lucid_dreams\bin\Debug\net7.0-windows\win-x64\hostpolicy.dll
 C:\Users\crims\Documents\GitHub\lucid_dreams\bin\Debug\net7.0-windows\win-x64\mscordaccore.dll
-C:\Users\crims\Documents\GitHub\lucid_dreams\bin\Debug\net7.0-windows\win-x64\mscordaccore_amd64_amd64_7.0.1023.36312.dll
 C:\Users\crims\Documents\GitHub\lucid_dreams\bin\Debug\net7.0-windows\win-x64\mscordbi.dll
 C:\Users\crims\Documents\GitHub\lucid_dreams\bin\Debug\net7.0-windows\win-x64\mscorrc.dll
 C:\Users\crims\Documents\GitHub\lucid_dreams\bin\Debug\net7.0-windows\win-x64\msquic.dll
@@ -475,3 +474,4 @@ C:\Users\crims\Documents\GitHub\lucid_dreams\obj\Debug\net7.0-windows\win-x64\lu
 C:\Users\crims\Documents\GitHub\lucid_dreams\obj\Debug\net7.0-windows\win-x64\lucid_dreams.genruntimeconfig.cache
 C:\Users\crims\Documents\GitHub\lucid_dreams\obj\Debug\net7.0-windows\win-x64\ref\lucid_dreams.dll
 C:\Users\crims\Documents\GitHub\lucid_dreams\bin\Debug\net7.0-windows\win-x64\Newtonsoft.Json.dll
+C:\Users\crims\Documents\GitHub\lucid_dreams\bin\Debug\net7.0-windows\win-x64\mscordaccore_amd64_amd64_7.0.1123.42427.dll

@@ -175,23 +175,75 @@ namespace lucid_dreams
                             Root2 = jsonDocument2.RootElement;
 
                             
-                            GlobalUsername = root.TryGetProperty("username", out var memberProperty) ? memberProperty.GetString() : null;
-                            GlobalKeyLink = root.TryGetProperty("key_link", out var linkProperty) ? linkProperty.GetInt32().ToString() : null;
-                            GlobalKeyStop = root.TryGetProperty("key_stop", out var stopProperty) ? stopProperty.GetInt32().ToString() : null;
-                            GlobalLevel = root.TryGetProperty("level", out var levelProperty) ? levelProperty.GetInt32().ToString() : null;
-                            GlobalProtection = root.TryGetProperty("protection", out var protectionProperty) ? protectionProperty.GetInt32().ToString() : null;
-                            GlobalFid = root.TryGetProperty("fid", out var fidProperty) ? fidProperty.GetInt32().ToString() : null;
-                            GlobalUnreadConversations = root.TryGetProperty("unread_conversations", out var unreadConversationsProperty) ? unreadConversationsProperty.GetInt32().ToString() : null;
-                            GlobalUnreadAlerts = root.TryGetProperty("unread_alerts", out var unreadAlertsProperty) ? unreadAlertsProperty.GetInt32().ToString() : null;
-                            GlobalRegisterDate = root.TryGetProperty("register_date", out var registerDateProperty) ? DateTimeOffset.FromUnixTimeSeconds(registerDateProperty.GetInt64()).DateTime.ToString() : null;
-                            GlobalPosts = root.TryGetProperty("posts", out var postsProperty) ? postsProperty.GetInt32().ToString() : null;
-                            GlobalScore = root.TryGetProperty("score", out var scoreProperty) ? scoreProperty.GetInt32().ToString() : null;
-                            AvatarURL = root.TryGetProperty("avatar", out var avatarURLProperty) ? avatarURLProperty.GetString() : null;  
-                            GlobalConfig = root.TryGetProperty("configuration", out var configProperty) ? configProperty.GetRawText() : default;
-                            if (root2.TryGetProperty("session_history", out var sessionProperty))
+                            if (root.TryGetProperty("username", out var memberProperty) && memberProperty.ValueKind == JsonValueKind.String)
+                            {
+                                GlobalUsername = memberProperty.GetString();
+                            }
+
+                            if (root.TryGetProperty("key_link", out var linkProperty) && linkProperty.ValueKind == JsonValueKind.Number)
+                            {
+                                GlobalKeyLink = linkProperty.GetInt32().ToString();
+                            }
+
+                            if (root.TryGetProperty("key_stop", out var stopProperty) && stopProperty.ValueKind == JsonValueKind.Number)
+                            {
+                                GlobalKeyStop = stopProperty.GetInt32().ToString();
+                            }
+
+                            if (root.TryGetProperty("level", out var levelProperty) && levelProperty.ValueKind == JsonValueKind.Number)
+                            {
+                                GlobalLevel = levelProperty.GetInt32().ToString();
+                            }
+
+                            if (root.TryGetProperty("protection", out var protectionProperty) && protectionProperty.ValueKind == JsonValueKind.Number)
+                            {
+                                GlobalProtection = protectionProperty.GetInt32().ToString();
+                            }
+
+                            if (root.TryGetProperty("fid", out var fidProperty) && fidProperty.ValueKind == JsonValueKind.Number)
+                            {
+                                GlobalFid = fidProperty.GetInt32().ToString();
+                            }
+
+                            if (root.TryGetProperty("unread_conversations", out var unreadConversationsProperty) && unreadConversationsProperty.ValueKind == JsonValueKind.Number)
+                            {
+                                GlobalUnreadConversations = unreadConversationsProperty.GetInt32().ToString();
+                            }
+
+                            if (root.TryGetProperty("unread_alerts", out var unreadAlertsProperty) && unreadAlertsProperty.ValueKind == JsonValueKind.Number)
+                            {
+                                GlobalUnreadAlerts = unreadAlertsProperty.GetInt32().ToString();
+                            }
+
+                            if (root.TryGetProperty("register_date", out var registerDateProperty) && registerDateProperty.ValueKind == JsonValueKind.Number)
+                            {
+                                GlobalRegisterDate = DateTimeOffset.FromUnixTimeSeconds(registerDateProperty.GetInt64()).DateTime.ToString();
+                            }
+
+                            if (root.TryGetProperty("posts", out var postsProperty) && postsProperty.ValueKind == JsonValueKind.Number)
+                            {
+                                GlobalPosts = postsProperty.GetInt32().ToString();
+                            }
+
+                            if (root.TryGetProperty("score", out var scoreProperty) && scoreProperty.ValueKind == JsonValueKind.Number)
+                            {
+                                GlobalScore = scoreProperty.GetInt32().ToString();
+                            }
+
+                            if (root.TryGetProperty("avatar", out var avatarURLProperty) && avatarURLProperty.ValueKind == JsonValueKind.String)
+                            {
+                                AvatarURL = avatarURLProperty.GetString();
+                            }
+
+                            if (root.TryGetProperty("configuration", out var configProperty) && configProperty.ValueKind == JsonValueKind.Object)
+                            {
+                                GlobalConfig = configProperty.GetRawText();
+                            }
+
+                            if (root2.TryGetProperty("session_history", out var sessionProperty) && sessionProperty.ValueKind == JsonValueKind.Object)
                             {
                                 SessionHistory = sessionProperty.GetRawText();
-                            }             
+                            }      
 
                             
                             this.Invoke(new Action(() => {

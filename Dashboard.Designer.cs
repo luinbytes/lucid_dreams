@@ -355,38 +355,40 @@ namespace lucid_dreams
                 }
             };
 
-            MaterialSkin.Controls.MaterialTextBox linkKeyBindBox = new MaterialSkin.Controls.MaterialTextBox
-            {
-                Location = new Point(10, 400),
-                Size = new Size(200, 36),
-                ReadOnly = true,
-                Text = ($"{linkKey}")
-            };
+            //TO-DO
 
-            linkKeyBindBox.KeyDown += (sender, e) =>
-            {
-                linkKeyBindBox.Text = Enum.GetName(typeof(Keys), e.KeyCode);
-                e.SuppressKeyPress = true;
-            };
+            // MaterialSkin.Controls.MaterialTextBox linkKeyBindBox = new MaterialSkin.Controls.MaterialTextBox
+            // {
+            //     Location = new Point(10, 400),
+            //     Size = new Size(200, 36),
+            //     ReadOnly = true,
+            //     Text = ($"{linkKey}")
+            // };
 
-            linkKeyBindBox.MouseDown += (sender, e) =>
-            {
-                switch (e.Button)
-                {
-                    case MouseButtons.Left:
-                        linkKeyBindBox.Text = "VK_LBUTTON";
-                        break;
-                    case MouseButtons.Right:
-                        linkKeyBindBox.Text = "VK_RBUTTON";
-                        break;
-                    case MouseButtons.Middle:
-                        linkKeyBindBox.Text = "VK_MBUTTON";
-                        break;
-                    // Add more cases here if needed...
-                }
-            };
+            // linkKeyBindBox.KeyDown += (sender, e) =>
+            // {
+            //     linkKeyBindBox.Text = Enum.GetName(typeof(Keys), e.KeyCode);
+            //     e.SuppressKeyPress = true;
+            // };
 
-            this.materialTabControl.TabPages[0].Controls.Add(linkKeyBindBox);
+            // linkKeyBindBox.MouseDown += (sender, e) =>
+            // {
+            //     switch (e.Button)
+            //     {
+            //         case MouseButtons.Left:
+            //             linkKeyBindBox.Text = "VK_LBUTTON";
+            //             break;
+            //         case MouseButtons.Right:
+            //             linkKeyBindBox.Text = "VK_RBUTTON";
+            //             break;
+            //         case MouseButtons.Middle:
+            //             linkKeyBindBox.Text = "VK_MBUTTON";
+            //             break;
+            //         // Add more cases here if needed...
+            //     }
+            // };
+
+            // this.materialTabControl.TabPages[0].Controls.Add(linkKeyBindBox);
 
             MaterialSkin.Controls.MaterialComboBox protectionComboBox = new MaterialSkin.Controls.MaterialComboBox
             {
