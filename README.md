@@ -70,6 +70,9 @@ Follow these steps to build the project:
 7. **Run the Project**: Finally, run the project with the following command: `dotnet run`
 
 
+8. **Build the Project**: If you want to build the source into a self contained binary, you can do so with the following command: `dotnet publish -r win-x64 -p:PublishSingleFile=true --self-contained true`
+
+
 Please note that this project seems to be a Windows Forms application, which is not fully supported in Visual Studio Code. For full support (including designer support), consider using Visual Studio instead. I'm just a masochist and enjoy making winforms without a nice click ui.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
