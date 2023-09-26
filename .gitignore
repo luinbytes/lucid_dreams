@@ -1,5 +1,6 @@
 # Ignore .exe files
 *.exe
+*.7z
 
 # Ignore directories created by the build and publish processes
 /build/

@@ -319,6 +319,10 @@ namespace lucid_dreams
                             }
                         }
                     }
+                    catch (KeyNotFoundException knfEx)
+                    {
+                        MessageBox.Show($"Key not found: {knfEx.Message}\nException Source: {knfEx.Source}\nException Stack Trace: {knfEx.StackTrace}");
+                    }
                     catch (Exception ex)
                     {
                         MessageBox.Show($"Exception: {ex.Message}\nException Source: {ex.Source}\nException Stack Trace: {ex.StackTrace}");
