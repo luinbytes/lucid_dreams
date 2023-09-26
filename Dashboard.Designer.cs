@@ -17,8 +17,8 @@ namespace lucid_dreams
     {
         string userkey = Login.GlobalUserKey;
         string username = Login.GlobalUsername;
-        string linkKey = Login.GlobalKeyLink;
-        string stopKey = Login.GlobalKeyStop;
+        // string linkKey = Login.GlobalKeyLink;
+        // string stopKey = Login.GlobalKeyStop;
         string level = Login.GlobalLevel;
         string protection = Login.GlobalProtection;
         string fid = Login.GlobalFid;
@@ -258,17 +258,23 @@ namespace lucid_dreams
                 StringBuilder successText = new StringBuilder();
                 successText.AppendLine("Success History:");
 
-                var successArray = sessionHistoryObj.RootElement.GetProperty("success").EnumerateArray();
-                foreach (var successItem in successArray)
+                if (sessionHistoryObj.RootElement.TryGetProperty("success", out var successArrayProperty) && successArrayProperty.ValueKind == JsonValueKind.Array)
                 {
-                    long time = long.Parse(successItem.GetProperty("time").GetString());
-                    DateTime timeConverted = DateTimeOffset.FromUnixTimeSeconds(time).DateTime;
+                    var successArray = successArrayProperty.EnumerateArray();
+                    foreach (var successItem in successArray)
+                    {
+                        if (successItem.TryGetProperty("time", out var timeProperty) && timeProperty.ValueKind == JsonValueKind.String)
+                        {
+                            long time = long.Parse(timeProperty.GetString());
+                            DateTime timeConverted = DateTimeOffset.FromUnixTimeSeconds(time).DateTime;
 
-                    string software = successItem.GetProperty("software").GetString();
-                    string version = successItem.GetProperty("version").GetString();
-                    string directory = successItem.GetProperty("directory").GetString();
+                            string software = successItem.GetProperty("software").GetString();
+                            string version = successItem.GetProperty("version").GetString();
+                            string directory = successItem.GetProperty("directory").GetString();
 
-                    successText.AppendLine($"Time: {timeConverted}, Software: {software}, Version: {version}, DIR: {directory}");
+                            successText.AppendLine($"Time: {timeConverted}, Software: {software}, Version: {version}, DIR: {directory}");
+                        }
+                    }
                 }
 
                 Label successLabel = new Label
@@ -283,17 +289,23 @@ namespace lucid_dreams
                 StringBuilder failureText = new StringBuilder();
                 failureText.AppendLine("\nFailure History:");
 
-                var failureArray = sessionHistoryObj.RootElement.GetProperty("failure").EnumerateArray();
-                foreach (var failureItem in failureArray)
+                if (sessionHistoryObj.RootElement.TryGetProperty("failure", out var failureArrayProperty) && failureArrayProperty.ValueKind == JsonValueKind.Array)
                 {
-                    long time = long.Parse(failureItem.GetProperty("time").GetString());
-                    DateTime timeConverted = DateTimeOffset.FromUnixTimeSeconds(time).DateTime;
+                    var failureArray = failureArrayProperty.EnumerateArray();
+                    foreach (var failureItem in failureArray)
+                    {
+                        if (failureItem.TryGetProperty("time", out var timeProperty) && timeProperty.ValueKind == JsonValueKind.String)
+                        {
+                            long time = long.Parse(timeProperty.GetString());
+                            DateTime timeConverted = DateTimeOffset.FromUnixTimeSeconds(time).DateTime;
 
-                    string software = failureItem.GetProperty("software").GetString();
-                    string version = failureItem.GetProperty("version").GetString();
-                    string directory = failureItem.GetProperty("directory").GetString();
+                            string software = failureItem.GetProperty("software").GetString();
+                            string version = failureItem.GetProperty("version").GetString();
+                            string directory = failureItem.GetProperty("directory").GetString();
 
-                    failureText.AppendLine($"Time: {timeConverted}, Software: {software}, Version: {version}, DIR: {directory}");
+                            failureText.AppendLine($"Time: {timeConverted}, Software: {software}, Version: {version}, DIR: {directory}");
+                        }
+                    }
                 }
 
                 Label failureLabel = new Label

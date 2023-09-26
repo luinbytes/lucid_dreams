@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Drawing;
 using System.Net.Http;
+using System.Net;
+using System.Diagnostics;
 using System.Text.Json;
 using System.Windows.Forms;
 using MaterialSkin;
@@ -70,8 +72,8 @@ namespace lucid_dreams
 
         public static string GlobalUserKey;
         public static string GlobalUsername;
-        public static string GlobalKeyLink;
-        public static string GlobalKeyStop;
+        // public static string GlobalKeyLink;
+        // public static string GlobalKeyStop;
         public static string GlobalLevel;
         public static string GlobalProtection;
         public static string GlobalFid;
@@ -165,7 +167,7 @@ namespace lucid_dreams
                             string resultGlobal = await globalResponse.Content.ReadAsStringAsync();
                             string resultSession = await sessionResponse.Content.ReadAsStringAsync();
                             
-                            GlobalUserKey = userKey;                            
+                            GlobalUserKey = userKey;                          
 
                             
                             var jsonDocument1 = JsonDocument.Parse(resultGlobal);
@@ -179,72 +181,109 @@ namespace lucid_dreams
                             {
                                 GlobalUsername = memberProperty.GetString();
                             }
-
-                            if (root.TryGetProperty("key_link", out var linkProperty) && linkProperty.ValueKind == JsonValueKind.Number)
+                            else
                             {
-                                GlobalKeyLink = linkProperty.GetInt32().ToString();
-                            }
-
-                            if (root.TryGetProperty("key_stop", out var stopProperty) && stopProperty.ValueKind == JsonValueKind.Number)
-                            {
-                                GlobalKeyStop = stopProperty.GetInt32().ToString();
+                                GlobalUsername = "default";
                             }
 
                             if (root.TryGetProperty("level", out var levelProperty) && levelProperty.ValueKind == JsonValueKind.Number)
                             {
                                 GlobalLevel = levelProperty.GetInt32().ToString();
                             }
+                            else
+                            {
+                                GlobalLevel = "0";
+                            }
 
                             if (root.TryGetProperty("protection", out var protectionProperty) && protectionProperty.ValueKind == JsonValueKind.Number)
                             {
                                 GlobalProtection = protectionProperty.GetInt32().ToString();
+                            }
+                            else
+                            {
+                                GlobalProtection = "0";
                             }
 
                             if (root.TryGetProperty("fid", out var fidProperty) && fidProperty.ValueKind == JsonValueKind.Number)
                             {
                                 GlobalFid = fidProperty.GetInt32().ToString();
                             }
+                            else
+                            {
+                                GlobalFid = "0";
+                            }
 
                             if (root.TryGetProperty("unread_conversations", out var unreadConversationsProperty) && unreadConversationsProperty.ValueKind == JsonValueKind.Number)
                             {
                                 GlobalUnreadConversations = unreadConversationsProperty.GetInt32().ToString();
+                            }
+                            else
+                            {
+                                GlobalUnreadConversations = "0";
                             }
 
                             if (root.TryGetProperty("unread_alerts", out var unreadAlertsProperty) && unreadAlertsProperty.ValueKind == JsonValueKind.Number)
                             {
                                 GlobalUnreadAlerts = unreadAlertsProperty.GetInt32().ToString();
                             }
+                            else
+                            {
+                                GlobalUnreadAlerts = "0";
+                            }
 
                             if (root.TryGetProperty("register_date", out var registerDateProperty) && registerDateProperty.ValueKind == JsonValueKind.Number)
                             {
                                 GlobalRegisterDate = DateTimeOffset.FromUnixTimeSeconds(registerDateProperty.GetInt64()).DateTime.ToString();
+                            }
+                            else
+                            {
+                                GlobalRegisterDate = DateTime.Now.ToString();
                             }
 
                             if (root.TryGetProperty("posts", out var postsProperty) && postsProperty.ValueKind == JsonValueKind.Number)
                             {
                                 GlobalPosts = postsProperty.GetInt32().ToString();
                             }
+                            else
+                            {
+                                GlobalPosts = "0";
+                            }
 
                             if (root.TryGetProperty("score", out var scoreProperty) && scoreProperty.ValueKind == JsonValueKind.Number)
                             {
                                 GlobalScore = scoreProperty.GetInt32().ToString();
+                            }
+                            else
+                            {
+                                GlobalScore = "0";
                             }
 
                             if (root.TryGetProperty("avatar", out var avatarURLProperty) && avatarURLProperty.ValueKind == JsonValueKind.String)
                             {
                                 AvatarURL = avatarURLProperty.GetString();
                             }
+                            else
+                            {
+                                AvatarURL = "default";
+                            }
 
                             if (root.TryGetProperty("configuration", out var configProperty) && configProperty.ValueKind == JsonValueKind.Object)
                             {
                                 GlobalConfig = configProperty.GetRawText();
+                            }
+                            else
+                            {
+                                GlobalConfig = "{}";
                             }
 
                             if (root2.TryGetProperty("session_history", out var sessionProperty) && sessionProperty.ValueKind == JsonValueKind.Object)
                             {
                                 SessionHistory = sessionProperty.GetRawText();
                             }      
-
+                            else
+                            {
+                                SessionHistory = "{}";
+                            }
                             
                             this.Invoke(new Action(() => {
                                 Dashboard Dashboard = new Dashboard();
@@ -255,12 +294,38 @@ namespace lucid_dreams
                         }
                         else
                         {
-                            MessageBox.Show($"Error: {globalResponse.StatusCode}");
+                            if (globalResponse.StatusCode == HttpStatusCode.Unauthorized)
+                            {
+                                DialogResult dialogResult = MessageBox.Show("This typically means your session hash is mismatched or you don't have a session.\n\nRun launch.bat to set a session?", "Error: Unauthorized", MessageBoxButtons.YesNo);
+                                if (dialogResult == DialogResult.Yes)
+                                {
+                                    string pathToBatchFile = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "launch.bat");
+                                    if (File.Exists(pathToBatchFile))
+                                    {
+                                        try
+                                        {
+                                            Process.Start(pathToBatchFile);
+                                        }
+                                        catch (Exception ex)
+                                        {
+                                            MessageBox.Show($"Exception: {ex.Message}");
+                                        }
+                                    }
+                                }
+                            }
+                            else
+                            {
+                                MessageBox.Show($"Error: {globalResponse.StatusCode}");
+                            }
                         }
+                    }
+                    catch (KeyNotFoundException knfEx)
+                    {
+                        MessageBox.Show($"Key not found: {knfEx.Message}\nException Source: {knfEx.Source}\nException Stack Trace: {knfEx.StackTrace}");
                     }
                     catch (Exception ex)
                     {
-                        MessageBox.Show($"Exception: {ex.Message}");
+                        MessageBox.Show($"Exception: {ex.Message}\nException Source: {ex.Source}\nException Stack Trace: {ex.StackTrace}");
                     }
                 }
             };
