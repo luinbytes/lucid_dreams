@@ -167,7 +167,7 @@ namespace lucid_dreams
                             string resultGlobal = await globalResponse.Content.ReadAsStringAsync();
                             string resultSession = await sessionResponse.Content.ReadAsStringAsync();
                             
-                            GlobalUserKey = userKey;                            
+                            GlobalUserKey = userKey;                          
 
                             
                             var jsonDocument1 = JsonDocument.Parse(resultGlobal);
@@ -181,72 +181,109 @@ namespace lucid_dreams
                             {
                                 GlobalUsername = memberProperty.GetString();
                             }
-
-                            // if (root.TryGetProperty("key_link", out var linkProperty) && linkProperty.ValueKind == JsonValueKind.Number)
-                            // {
-                            //     GlobalKeyLink = linkProperty.GetInt32().ToString();
-                            // }
-
-                            // if (root.TryGetProperty("key_stop", out var stopProperty) && stopProperty.ValueKind == JsonValueKind.Number)
-                            // {
-                            //     GlobalKeyStop = stopProperty.GetInt32().ToString();
-                            // }
+                            else
+                            {
+                                GlobalUsername = "default";
+                            }
 
                             if (root.TryGetProperty("level", out var levelProperty) && levelProperty.ValueKind == JsonValueKind.Number)
                             {
                                 GlobalLevel = levelProperty.GetInt32().ToString();
+                            }
+                            else
+                            {
+                                GlobalLevel = "0";
                             }
 
                             if (root.TryGetProperty("protection", out var protectionProperty) && protectionProperty.ValueKind == JsonValueKind.Number)
                             {
                                 GlobalProtection = protectionProperty.GetInt32().ToString();
                             }
+                            else
+                            {
+                                GlobalProtection = "0";
+                            }
 
                             if (root.TryGetProperty("fid", out var fidProperty) && fidProperty.ValueKind == JsonValueKind.Number)
                             {
                                 GlobalFid = fidProperty.GetInt32().ToString();
+                            }
+                            else
+                            {
+                                GlobalFid = "0";
                             }
 
                             if (root.TryGetProperty("unread_conversations", out var unreadConversationsProperty) && unreadConversationsProperty.ValueKind == JsonValueKind.Number)
                             {
                                 GlobalUnreadConversations = unreadConversationsProperty.GetInt32().ToString();
                             }
+                            else
+                            {
+                                GlobalUnreadConversations = "0";
+                            }
 
                             if (root.TryGetProperty("unread_alerts", out var unreadAlertsProperty) && unreadAlertsProperty.ValueKind == JsonValueKind.Number)
                             {
                                 GlobalUnreadAlerts = unreadAlertsProperty.GetInt32().ToString();
+                            }
+                            else
+                            {
+                                GlobalUnreadAlerts = "0";
                             }
 
                             if (root.TryGetProperty("register_date", out var registerDateProperty) && registerDateProperty.ValueKind == JsonValueKind.Number)
                             {
                                 GlobalRegisterDate = DateTimeOffset.FromUnixTimeSeconds(registerDateProperty.GetInt64()).DateTime.ToString();
                             }
+                            else
+                            {
+                                GlobalRegisterDate = DateTime.Now.ToString();
+                            }
 
                             if (root.TryGetProperty("posts", out var postsProperty) && postsProperty.ValueKind == JsonValueKind.Number)
                             {
                                 GlobalPosts = postsProperty.GetInt32().ToString();
+                            }
+                            else
+                            {
+                                GlobalPosts = "0";
                             }
 
                             if (root.TryGetProperty("score", out var scoreProperty) && scoreProperty.ValueKind == JsonValueKind.Number)
                             {
                                 GlobalScore = scoreProperty.GetInt32().ToString();
                             }
+                            else
+                            {
+                                GlobalScore = "0";
+                            }
 
                             if (root.TryGetProperty("avatar", out var avatarURLProperty) && avatarURLProperty.ValueKind == JsonValueKind.String)
                             {
                                 AvatarURL = avatarURLProperty.GetString();
+                            }
+                            else
+                            {
+                                AvatarURL = "default";
                             }
 
                             if (root.TryGetProperty("configuration", out var configProperty) && configProperty.ValueKind == JsonValueKind.Object)
                             {
                                 GlobalConfig = configProperty.GetRawText();
                             }
+                            else
+                            {
+                                GlobalConfig = "{}";
+                            }
 
                             if (root2.TryGetProperty("session_history", out var sessionProperty) && sessionProperty.ValueKind == JsonValueKind.Object)
                             {
                                 SessionHistory = sessionProperty.GetRawText();
                             }      
-
+                            else
+                            {
+                                SessionHistory = "{}";
+                            }
                             
                             this.Invoke(new Action(() => {
                                 Dashboard Dashboard = new Dashboard();
@@ -284,10 +321,7 @@ namespace lucid_dreams
                     }
                     catch (Exception ex)
                     {
-                        MessageBox.Show($"Exception: {ex.Message}");
-                        MessageBox.Show($"Exception Source: {ex.Source}");
-                        MessageBox.Show($"Exception Stack Trace: {ex.StackTrace}");
-                        
+                        MessageBox.Show($"Exception: {ex.Message}\nException Source: {ex.Source}\nException Stack Trace: {ex.StackTrace}");
                     }
                 }
             };

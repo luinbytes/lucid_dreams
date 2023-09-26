@@ -17,8 +17,8 @@ namespace lucid_dreams
     {
         string userkey = Login.GlobalUserKey;
         string username = Login.GlobalUsername;
-        string linkKey = Login.GlobalKeyLink;
-        string stopKey = Login.GlobalKeyStop;
+        // string linkKey = Login.GlobalKeyLink;
+        // string stopKey = Login.GlobalKeyStop;
         string level = Login.GlobalLevel;
         string protection = Login.GlobalProtection;
         string fid = Login.GlobalFid;
@@ -37,38 +37,38 @@ namespace lucid_dreams
         private System.ComponentModel.IContainer components = null;
         private Label usernameLabel;
 
-        Dictionary<int, string> keyCodes = new Dictionary<int, string>
-        {
-            { 1, "Left Click" },
-            { 2, "Right Click" },
-            { 3, "Cancel" },
-            { 4, "Middle Mouse" },
-            { 5, "Mouse 4" },
-            { 6, "Mouse 5" },
-            { 8, "Back" },
-            { 9, "Tab" },
-            { 12, "Clear" },
-            { 13, "Return" },
-            { 16, "Shift" },
-            { 17, "Control" },
-            { 18, "Menu" },
-            { 19, "Pause" },
-            { 20, "Caps Lock" },
-            { 21, "Kana" },
-            { 22 , "Undefined 1" },
-            { 23 , "IME Junja mode" },
-            { 24 , "IME Final mode" },
-            { 25 , "" },
-            { 26 , "" },
-            { 27 , "" },
-            { 28 , "" },
-            { 29 , "" },
-            { 30 , "" },
-            { 31 , "" },
-            { 32 , "" },
-            { 33 , "" },
-            { 34 , "" },
-        };
+        // Dictionary<int, string> keyCodes = new Dictionary<int, string>
+        // {
+        //     { 1, "Left Click" },
+        //     { 2, "Right Click" },
+        //     { 3, "Cancel" },
+        //     { 4, "Middle Mouse" },
+        //     { 5, "Mouse 4" },
+        //     { 6, "Mouse 5" },
+        //     { 8, "Back" },
+        //     { 9, "Tab" },
+        //     { 12, "Clear" },
+        //     { 13, "Return" },
+        //     { 16, "Shift" },
+        //     { 17, "Control" },
+        //     { 18, "Menu" },
+        //     { 19, "Pause" },
+        //     { 20, "Caps Lock" },
+        //     { 21, "Kana" },
+        //     { 22 , "Undefined 1" },
+        //     { 23 , "IME Junja mode" },
+        //     { 24 , "IME Final mode" },
+        //     { 25 , "" },
+        //     { 26 , "" },
+        //     { 27 , "" },
+        //     { 28 , "" },
+        //     { 29 , "" },
+        //     { 30 , "" },
+        //     { 31 , "" },
+        //     { 32 , "" },
+        //     { 33 , "" },
+        //     { 34 , "" },
+        // };
 
         public class Script
         {
