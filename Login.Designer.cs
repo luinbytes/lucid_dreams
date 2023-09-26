@@ -183,7 +183,25 @@ namespace lucid_dreams
                             }
                             else
                             {
-                                GlobalUsername = "default";
+                                GlobalUsername = "null";
+                            }
+
+                            if (root.TryGetProperty("key_link", out var linkProperty) && linkProperty.ValueKind == JsonValueKind.Number)
+                            {
+                                GlobalKeyLink = linkProperty.GetInt32().ToString();
+                            }
+                            else
+                            {
+                                GlobalKeyLink = "null";
+                            }
+
+                            if (root.TryGetProperty("key_stop", out var stopProperty) && stopProperty.ValueKind == JsonValueKind.Number)
+                            {
+                                GlobalKeyStop = stopProperty.GetInt32().ToString();
+                            }
+                            else
+                            {
+                                GlobalKeyStop = "null";
                             }
 
                             if (root.TryGetProperty("level", out var levelProperty) && levelProperty.ValueKind == JsonValueKind.Number)
