@@ -17,8 +17,8 @@ namespace lucid_dreams
     {
         string userkey = Login.GlobalUserKey;
         string username = Login.GlobalUsername;
-        // string linkKey = Login.GlobalKeyLink;
-        // string stopKey = Login.GlobalKeyStop;
+        string linkKey = Login.GlobalKeyLink;
+        string stopKey = Login.GlobalKeyStop;
         string level = Login.GlobalLevel;
         string protection = Login.GlobalProtection;
         string fid = Login.GlobalFid;

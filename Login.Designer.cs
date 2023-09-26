@@ -72,8 +72,8 @@ namespace lucid_dreams
 
         public static string GlobalUserKey;
         public static string GlobalUsername;
-        // public static string GlobalKeyLink;
-        // public static string GlobalKeyStop;
+        public static string GlobalKeyLink;
+        public static string GlobalKeyStop;
         public static string GlobalLevel;
         public static string GlobalProtection;
         public static string GlobalFid;
