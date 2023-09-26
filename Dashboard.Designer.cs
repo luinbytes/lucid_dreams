@@ -15,6 +15,7 @@ namespace lucid_dreams
 
     public partial class Dashboard : MaterialForm
     {
+        string version = "v0.6.8.1";
         string userkey = Login.GlobalUserKey;
         string username = Login.GlobalUsername;
         string linkKey = Login.GlobalKeyLink;
@@ -158,6 +159,15 @@ namespace lucid_dreams
             };
             
             this.materialTabControl.TabPages[0].Controls.Add(usernameLabel);
+
+            Label versionLabel = new Label
+            {
+                Location = new Point(avatarPictureBox.Width + 5, this.ClientSize.Height - avatarPictureBox.Height + 35),
+                Text = $"Lucid Dreams {version}",
+                AutoSize = true
+            };
+            
+            this.materialTabControl.TabPages[0].Controls.Add(versionLabel);
             
             Panel forumStatsPanel = new Panel
             {
