@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Drawing;
 using System.Net.Http;
+using System.Net;
+using System.Diagnostics;
 using System.Text.Json;
 using System.Windows.Forms;
 using MaterialSkin;
@@ -70,8 +72,8 @@ namespace lucid_dreams
 
         public static string GlobalUserKey;
         public static string GlobalUsername;
-        public static string GlobalKeyLink;
-        public static string GlobalKeyStop;
+        // public static string GlobalKeyLink;
+        // public static string GlobalKeyStop;
         public static string GlobalLevel;
         public static string GlobalProtection;
         public static string GlobalFid;
@@ -180,15 +182,15 @@ namespace lucid_dreams
                                 GlobalUsername = memberProperty.GetString();
                             }
 
-                            if (root.TryGetProperty("key_link", out var linkProperty) && linkProperty.ValueKind == JsonValueKind.Number)
-                            {
-                                GlobalKeyLink = linkProperty.GetInt32().ToString();
-                            }
+                            // if (root.TryGetProperty("key_link", out var linkProperty) && linkProperty.ValueKind == JsonValueKind.Number)
+                            // {
+                            //     GlobalKeyLink = linkProperty.GetInt32().ToString();
+                            // }
 
-                            if (root.TryGetProperty("key_stop", out var stopProperty) && stopProperty.ValueKind == JsonValueKind.Number)
-                            {
-                                GlobalKeyStop = stopProperty.GetInt32().ToString();
-                            }
+                            // if (root.TryGetProperty("key_stop", out var stopProperty) && stopProperty.ValueKind == JsonValueKind.Number)
+                            // {
+                            //     GlobalKeyStop = stopProperty.GetInt32().ToString();
+                            // }
 
                             if (root.TryGetProperty("level", out var levelProperty) && levelProperty.ValueKind == JsonValueKind.Number)
                             {
@@ -255,12 +257,37 @@ namespace lucid_dreams
                         }
                         else
                         {
-                            MessageBox.Show($"Error: {globalResponse.StatusCode}");
+                            if (globalResponse.StatusCode == HttpStatusCode.Unauthorized)
+                            {
+                                DialogResult dialogResult = MessageBox.Show("This typically means your session hash is mismatched or you don't have a session.\n\nRun launch.bat to set a session?", "Error: Unauthorized", MessageBoxButtons.YesNo);
+                                if (dialogResult == DialogResult.Yes)
+                                {
+                                    string pathToBatchFile = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "launch.bat");
+                                    if (File.Exists(pathToBatchFile))
+                                    {
+                                        try
+                                        {
+                                            Process.Start(pathToBatchFile);
+                                        }
+                                        catch (Exception ex)
+                                        {
+                                            MessageBox.Show($"Exception: {ex.Message}");
+                                        }
+                                    }
+                                }
+                            }
+                            else
+                            {
+                                MessageBox.Show($"Error: {globalResponse.StatusCode}");
+                            }
                         }
                     }
                     catch (Exception ex)
                     {
                         MessageBox.Show($"Exception: {ex.Message}");
+                        MessageBox.Show($"Exception Source: {ex.Source}");
+                        MessageBox.Show($"Exception Stack Trace: {ex.StackTrace}");
+                        
                     }
                 }
             };
