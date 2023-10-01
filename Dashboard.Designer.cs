@@ -15,6 +15,10 @@ namespace lucid_dreams
 
     public partial class Dashboard : MaterialForm
     {
+<<<<<<< Updated upstream
+=======
+        string version = "v0.7.0.1";
+>>>>>>> Stashed changes
         string userkey = Login.GlobalUserKey;
         string username = Login.GlobalUsername;
         // string linkKey = Login.GlobalKeyLink;
@@ -368,6 +372,7 @@ namespace lucid_dreams
             };
 
             //TO-DO
+<<<<<<< Updated upstream
 
             // MaterialSkin.Controls.MaterialTextBox linkKeyBindBox = new MaterialSkin.Controls.MaterialTextBox
             // {
@@ -400,6 +405,39 @@ namespace lucid_dreams
             //     }
             // };
 
+=======
+            // MaterialSkin.Controls.MaterialTextBox linkKeyBindBox = new MaterialSkin.Controls.MaterialTextBox
+            // {
+            //     Location = new Point(10, 400),
+            //     Size = new Size(200, 36),
+            //     ReadOnly = true,
+            //     Text = ($"{linkKey}")
+            // };
+
+            // linkKeyBindBox.KeyDown += (sender, e) =>
+            // {
+            //     linkKeyBindBox.Text = Enum.GetName(typeof(Keys), e.KeyCode);
+            //     e.SuppressKeyPress = true;
+            // };
+
+            // linkKeyBindBox.MouseDown += (sender, e) =>
+            // {
+            //     switch (e.Button)
+            //     {
+            //         case MouseButtons.Left:
+            //             linkKeyBindBox.Text = "VK_LBUTTON";
+            //             break;
+            //         case MouseButtons.Right:
+            //             linkKeyBindBox.Text = "VK_RBUTTON";
+            //             break;
+            //         case MouseButtons.Middle:
+            //             linkKeyBindBox.Text = "VK_MBUTTON";
+            //             break;
+            //         //TODO add the rest lmao lazy bastard
+            //     }
+            // };
+
+>>>>>>> Stashed changes
             // this.materialTabControl.TabPages[0].Controls.Add(linkKeyBindBox);
 
             MaterialSkin.Controls.MaterialComboBox protectionComboBox = new MaterialSkin.Controls.MaterialComboBox
@@ -414,7 +452,7 @@ namespace lucid_dreams
             int protectionLevel;
             if (int.TryParse(Login.GlobalProtection, out protectionLevel))
             {
-                protectionComboBox.Items.AddRange(new string[] { "Standard", "Zombie", "Kernel", "Min (Usr)", "Min (Ker)" });
+                protectionComboBox.Items.AddRange(new string[] { "Standard", "Kernel", "Min (Usr)", "Min (Ker)" });
                 protectionComboBox.SelectedIndex = protectionLevel;
             }
             else
@@ -523,11 +561,22 @@ namespace lucid_dreams
 
                         
                         multilineTextField.Text = formattedJson;
+                        loadConfigButton.Text = "Loaded!";
                     }
                     else
                     {
-                        MessageBox.Show("Failed to load the configuration.");
+                        loadConfigButton.Text = "Failed!";
                     }
+
+                    System.Windows.Forms.Timer timer = new System.Windows.Forms.Timer();
+                    timer.Interval = 5000;
+                    timer.Tick += (s, ea) =>
+                    {
+                        loadConfigButton.Text = "Load Config";
+                        loadConfigButton.Size = new Size(100, 36);
+                        timer.Stop();
+                    };
+                    timer.Start();
                 }
                 catch (Exception ex)
                 {
@@ -567,12 +616,23 @@ namespace lucid_dreams
 
                     if (response.IsSuccessStatusCode)
                     {
-                        MessageBox.Show("Configuration saved successfully.");
+                        saveConfigButton.Text = "Saved!";
                     }
                     else
                     {
                         MessageBox.Show($"Error: {response.StatusCode}");
                     }
+                    
+                    System.Windows.Forms.Timer timer = new System.Windows.Forms.Timer();
+                    timer.Interval = 5000;
+                    timer.Tick += (s, ea) =>
+                    {
+                        saveConfigButton.Text = "Save Config";
+                        saveConfigButton.Size = new Size(100, 36);
+                        timer.Stop();
+                    };
+                    timer.Start();
+
                 }
                 catch (Exception ex)
                 {
@@ -620,14 +680,9 @@ namespace lucid_dreams
                         
                         System.Windows.Forms.Timer timer = new System.Windows.Forms.Timer();
                         timer.Interval = 3000; 
-
-                        
                         timer.Tick += (s, ea) =>
                         {
-                            
                             resetConfigButton.Text = "Reset";
-
-                            
                             timer.Stop();
                         };
 
