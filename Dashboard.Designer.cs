@@ -19,8 +19,8 @@ namespace lucid_dreams
         string version = "v0.7.1";
         string userkey = Login.GlobalUserKey;
         string username = Login.GlobalUsername;
-        // string linkKey = Login.GlobalKeyLink;
-        // string stopKey = Login.GlobalKeyStop;
+        //string linkKey = Login.GlobalKeyLink;
+        //string stopKey = Login.GlobalKeyStop;
         string level = Login.GlobalLevel;
         string protection = Login.GlobalProtection;
         string fid = Login.GlobalFid;
@@ -160,6 +160,15 @@ namespace lucid_dreams
             };
             
             this.materialTabControl.TabPages[0].Controls.Add(usernameLabel);
+
+            Label versionLabel = new Label
+            {
+                Location = new Point(avatarPictureBox.Width + 5, this.ClientSize.Height - avatarPictureBox.Height + 35),
+                Text = $"Lucid Dreams {version}",
+                AutoSize = true
+            };
+            
+            this.materialTabControl.TabPages[0].Controls.Add(versionLabel);
             
             Panel forumStatsPanel = new Panel
             {
@@ -369,7 +378,49 @@ namespace lucid_dreams
                 }
             };
 
-            //TO-DO
+            MaterialSkin.Controls.MaterialButton checkForUpdatesButton = new MaterialSkin.Controls.MaterialButton
+            {
+                Location = new Point(10, 255),
+                Size = new Size(200, 36), 
+                Text = "Check for Updates",
+                AutoSize = false
+            };
+
+            this.materialTabControl.TabPages[0].Controls.Add(checkForUpdatesButton);
+
+            checkForUpdatesButton.Click += async (sender, e) =>
+            {
+                try
+                {
+                    using (HttpClient client = new HttpClient())
+                    {
+                        // Static URL to the release zip file
+                        string downloadUrl = "https://github.com/luinbytes/lucid_dreams/releases/download/stable/lucid_dreams.zip";
+
+                        HttpResponseMessage downloadResponse = await client.GetAsync(downloadUrl);
+
+                        if (downloadResponse.IsSuccessStatusCode)
+                        {
+                            byte[] data = await downloadResponse.Content.ReadAsByteArrayAsync();
+
+                            string filePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "lucid_dreams_latest_AU.zip");
+                            await File.WriteAllBytesAsync(filePath, data);
+
+                            checkForUpdatesButton.Text = "Updated! Extract the zip.";
+                        }
+                        else
+                        {
+                            checkForUpdatesButton.Text = $"Error: {downloadResponse.StatusCode}";
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    checkForUpdatesButton.Text = $"Error: {ex.Message}";
+                }
+            };
+
+            //To-Do
             // MaterialSkin.Controls.MaterialTextBox linkKeyBindBox = new MaterialSkin.Controls.MaterialTextBox
             // {
             //     Location = new Point(10, 400),
@@ -415,7 +466,7 @@ namespace lucid_dreams
             int protectionLevel;
             if (int.TryParse(Login.GlobalProtection, out protectionLevel))
             {
-                protectionComboBox.Items.AddRange(new string[] { "Standard", "Kernel", "Min (Usr)", "Min (Ker)" });
+                protectionComboBox.Items.AddRange(new string[] { "Standard", "Zombie", "Kernel", "Min (Usr)", "Min (Ker)" });
                 protectionComboBox.SelectedIndex = protectionLevel;
             }
             else
@@ -524,22 +575,11 @@ namespace lucid_dreams
 
                         
                         multilineTextField.Text = formattedJson;
-                        loadConfigButton.Text = "Loaded!";
                     }
                     else
                     {
-                        loadConfigButton.Text = "Failed!";
+                        MessageBox.Show("Failed to load the configuration.");
                     }
-
-                    System.Windows.Forms.Timer timer = new System.Windows.Forms.Timer();
-                    timer.Interval = 5000;
-                    timer.Tick += (s, ea) =>
-                    {
-                        loadConfigButton.Text = "Load Config";
-                        loadConfigButton.Size = new Size(100, 36);
-                        timer.Stop();
-                    };
-                    timer.Start();
                 }
                 catch (Exception ex)
                 {
@@ -579,23 +619,12 @@ namespace lucid_dreams
 
                     if (response.IsSuccessStatusCode)
                     {
-                        saveConfigButton.Text = "Saved!";
+                        MessageBox.Show("Configuration saved successfully.");
                     }
                     else
                     {
                         MessageBox.Show($"Error: {response.StatusCode}");
                     }
-                    
-                    System.Windows.Forms.Timer timer = new System.Windows.Forms.Timer();
-                    timer.Interval = 5000;
-                    timer.Tick += (s, ea) =>
-                    {
-                        saveConfigButton.Text = "Save Config";
-                        saveConfigButton.Size = new Size(100, 36);
-                        timer.Stop();
-                    };
-                    timer.Start();
-
                 }
                 catch (Exception ex)
                 {
@@ -643,9 +672,14 @@ namespace lucid_dreams
                         
                         System.Windows.Forms.Timer timer = new System.Windows.Forms.Timer();
                         timer.Interval = 3000; 
+
+                        
                         timer.Tick += (s, ea) =>
                         {
+                            
                             resetConfigButton.Text = "Reset";
+
+                            
                             timer.Stop();
                         };
 
