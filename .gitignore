@@ -6,3 +6,5 @@
 /build/
 /publish/
 /.vs/
+/obj/Debug/
+/obj/Release/
