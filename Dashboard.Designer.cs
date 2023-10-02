@@ -9,13 +9,14 @@ using System.Web;
 using System.Diagnostics;
 using Newtonsoft.Json;
 using System.Data;
+using System.IO.Compression;
 
 namespace lucid_dreams
 {
 
     public partial class Dashboard : MaterialForm
     {
-        string version = "v0.6.8.1";
+        string version = "v0.7.1";
         string userkey = Login.GlobalUserKey;
         string username = Login.GlobalUsername;
         string linkKey = Login.GlobalKeyLink;
@@ -377,39 +378,81 @@ namespace lucid_dreams
                 }
             };
 
-            //To-Do
-            MaterialSkin.Controls.MaterialTextBox linkKeyBindBox = new MaterialSkin.Controls.MaterialTextBox
+            MaterialSkin.Controls.MaterialButton checkForUpdatesButton = new MaterialSkin.Controls.MaterialButton
             {
-                Location = new Point(10, 400),
-                Size = new Size(200, 36),
-                ReadOnly = true,
-                Text = ($"{linkKey}")
+                Location = new Point(10, 255),
+                Size = new Size(200, 36), 
+                Text = "Check for Updates",
+                AutoSize = false
             };
 
-            linkKeyBindBox.KeyDown += (sender, e) =>
-            {
-                linkKeyBindBox.Text = Enum.GetName(typeof(Keys), e.KeyCode);
-                e.SuppressKeyPress = true;
-            };
+            this.materialTabControl.TabPages[0].Controls.Add(checkForUpdatesButton);
 
-            linkKeyBindBox.MouseDown += (sender, e) =>
+            checkForUpdatesButton.Click += async (sender, e) =>
             {
-                switch (e.Button)
+                try
                 {
-                    case MouseButtons.Left:
-                        linkKeyBindBox.Text = "VK_LBUTTON";
-                        break;
-                    case MouseButtons.Right:
-                        linkKeyBindBox.Text = "VK_RBUTTON";
-                        break;
-                    case MouseButtons.Middle:
-                        linkKeyBindBox.Text = "VK_MBUTTON";
-                        break;
-                    //TODO add the rest lmao lazy bastard
+                    using (HttpClient client = new HttpClient())
+                    {
+                        // Static URL to the release zip file
+                        string downloadUrl = "https://github.com/luinbytes/lucid_dreams/releases/download/stable/lucid_dreams.zip";
+
+                        HttpResponseMessage downloadResponse = await client.GetAsync(downloadUrl);
+
+                        if (downloadResponse.IsSuccessStatusCode)
+                        {
+                            byte[] data = await downloadResponse.Content.ReadAsByteArrayAsync();
+
+                            string filePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "lucid_dreams_latest_AU.zip");
+                            await File.WriteAllBytesAsync(filePath, data);
+
+                            checkForUpdatesButton.Text = "Updated! Extract the zip.";
+                        }
+                        else
+                        {
+                            checkForUpdatesButton.Text = $"Error: {downloadResponse.StatusCode}";
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    checkForUpdatesButton.Text = $"Error: {ex.Message}";
                 }
             };
 
-            this.materialTabControl.TabPages[0].Controls.Add(linkKeyBindBox);
+            //To-Do
+            // MaterialSkin.Controls.MaterialTextBox linkKeyBindBox = new MaterialSkin.Controls.MaterialTextBox
+            // {
+            //     Location = new Point(10, 400),
+            //     Size = new Size(200, 36),
+            //     ReadOnly = true,
+            //     Text = ($"{linkKey}")
+            // };
+
+            // linkKeyBindBox.KeyDown += (sender, e) =>
+            // {
+            //     linkKeyBindBox.Text = Enum.GetName(typeof(Keys), e.KeyCode);
+            //     e.SuppressKeyPress = true;
+            // };
+
+            // linkKeyBindBox.MouseDown += (sender, e) =>
+            // {
+            //     switch (e.Button)
+            //     {
+            //         case MouseButtons.Left:
+            //             linkKeyBindBox.Text = "VK_LBUTTON";
+            //             break;
+            //         case MouseButtons.Right:
+            //             linkKeyBindBox.Text = "VK_RBUTTON";
+            //             break;
+            //         case MouseButtons.Middle:
+            //             linkKeyBindBox.Text = "VK_MBUTTON";
+            //             break;
+            //         //TODO add the rest lmao lazy bastard
+            //     }
+            // };
+
+            // this.materialTabControl.TabPages[0].Controls.Add(linkKeyBindBox);
 
             MaterialSkin.Controls.MaterialComboBox protectionComboBox = new MaterialSkin.Controls.MaterialComboBox
             {
