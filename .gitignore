@@ -1,8 +1,10 @@
 # Ignore .exe files
 *.exe
 *.7z
+*.zip
 
 # Ignore directories created by the build and publish processes
 /build/
 /publish/
 /.vs/
+/.vscode/

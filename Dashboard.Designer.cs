@@ -15,10 +15,7 @@ namespace lucid_dreams
 
     public partial class Dashboard : MaterialForm
     {
-<<<<<<< Updated upstream
-=======
         string version = "v0.7.0.1";
->>>>>>> Stashed changes
         string userkey = Login.GlobalUserKey;
         string username = Login.GlobalUsername;
         // string linkKey = Login.GlobalKeyLink;
@@ -372,40 +369,6 @@ namespace lucid_dreams
             };
 
             //TO-DO
-<<<<<<< Updated upstream
-
-            // MaterialSkin.Controls.MaterialTextBox linkKeyBindBox = new MaterialSkin.Controls.MaterialTextBox
-            // {
-            //     Location = new Point(10, 400),
-            //     Size = new Size(200, 36),
-            //     ReadOnly = true,
-            //     Text = ($"{linkKey}")
-            // };
-
-            // linkKeyBindBox.KeyDown += (sender, e) =>
-            // {
-            //     linkKeyBindBox.Text = Enum.GetName(typeof(Keys), e.KeyCode);
-            //     e.SuppressKeyPress = true;
-            // };
-
-            // linkKeyBindBox.MouseDown += (sender, e) =>
-            // {
-            //     switch (e.Button)
-            //     {
-            //         case MouseButtons.Left:
-            //             linkKeyBindBox.Text = "VK_LBUTTON";
-            //             break;
-            //         case MouseButtons.Right:
-            //             linkKeyBindBox.Text = "VK_RBUTTON";
-            //             break;
-            //         case MouseButtons.Middle:
-            //             linkKeyBindBox.Text = "VK_MBUTTON";
-            //             break;
-            //         // Add more cases here if needed...
-            //     }
-            // };
-
-=======
             // MaterialSkin.Controls.MaterialTextBox linkKeyBindBox = new MaterialSkin.Controls.MaterialTextBox
             // {
             //     Location = new Point(10, 400),
@@ -437,7 +400,6 @@ namespace lucid_dreams
             //     }
             // };
 
->>>>>>> Stashed changes
             // this.materialTabControl.TabPages[0].Controls.Add(linkKeyBindBox);
 
             MaterialSkin.Controls.MaterialComboBox protectionComboBox = new MaterialSkin.Controls.MaterialComboBox
