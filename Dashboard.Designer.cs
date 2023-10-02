@@ -377,7 +377,7 @@ namespace lucid_dreams
                 }
             };
 
-            //TO-DO
+            //To-Do
             MaterialSkin.Controls.MaterialTextBox linkKeyBindBox = new MaterialSkin.Controls.MaterialTextBox
             {
                 Location = new Point(10, 400),
