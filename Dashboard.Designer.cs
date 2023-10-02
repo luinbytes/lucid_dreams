@@ -9,13 +9,14 @@ using System.Web;
 using System.Diagnostics;
 using Newtonsoft.Json;
 using System.Data;
+using System.IO.Compression;
 
 namespace lucid_dreams
 {
 
     public partial class Dashboard : MaterialForm
     {
-        string version = "v0.7.0.1";
+        string version = "v0.7.1";
         string userkey = Login.GlobalUserKey;
         string username = Login.GlobalUsername;
         // string linkKey = Login.GlobalKeyLink;
