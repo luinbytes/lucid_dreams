@@ -950,33 +950,28 @@ namespace lucid_dreams
 
                             MaterialSkin.Controls.MaterialTextBox searchBox = new MaterialSkin.Controls.MaterialTextBox
                             {
-                                Location = new Point(1, 30), // Adjust the location as needed
+                                Location = new Point(1, 30),
                                 Size = new Size(858, 25),
                                 Hint = "Search scripts, authors etc..."
                             };
 
-                            // Add the TextBox to the specific TabPage's Controls collection
                             this.materialTabControl.TabPages[2].Controls.Add(searchBox);
                             searchBox.BringToFront();
 
                             System.Windows.Forms.Timer searchTimer = new System.Windows.Forms.Timer
                             {
-                                Interval = 200, // Set delay as needed
+                                Interval = 200,
                             };
 
                             searchBox.TextChanged += (sender, e) =>
                             {
-                                // Reset the timer every time the text changes
                                 searchTimer.Stop();
                                 searchTimer.Start();
                             };
 
                             searchTimer.Tick += (sender, e) =>
                             {
-                                // Stop the timer
                                 searchTimer.Stop();
-
-                                // Perform the search
                                 string searchText = searchBox.Text.ToLower();
                                 foreach (DataGridViewRow row in scriptsDataGridView.Rows)
                                 {
