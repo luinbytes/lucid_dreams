@@ -16,7 +16,7 @@ namespace lucid_dreams
 
     public partial class Dashboard : MaterialForm
     {
-        string version = "v0.7.1";
+        string version = "v0.7.3";
         string userkey = Login.GlobalUserKey;
         string username = Login.GlobalUsername;
         //string linkKey = Login.GlobalKeyLink;
@@ -784,8 +784,8 @@ namespace lucid_dreams
                             
                             DataGridView scriptsDataGridView = new DataGridView
                             {
-                                Location = new Point(0, 30), 
-                                Size = new Size(860, 540), 
+                                Location = new Point(0, 80), 
+                                Size = new Size(860, 490), 
                                 AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells,
                                 ReadOnly = true,
                                 AllowUserToAddRows = false,
@@ -947,6 +947,50 @@ namespace lucid_dreams
 
                             
                             this.materialTabControl.TabPages[2].Controls.Add(scriptsDataGridView);
+
+                            MaterialSkin.Controls.MaterialTextBox searchBox = new MaterialSkin.Controls.MaterialTextBox
+                            {
+                                Location = new Point(1, 30), // Adjust the location as needed
+                                Size = new Size(858, 25),
+                                Hint = "Search scripts, authors etc..."
+                            };
+
+                            // Add the TextBox to the specific TabPage's Controls collection
+                            this.materialTabControl.TabPages[2].Controls.Add(searchBox);
+                            searchBox.BringToFront();
+
+                            System.Windows.Forms.Timer searchTimer = new System.Windows.Forms.Timer
+                            {
+                                Interval = 200, // Set delay as needed
+                            };
+
+                            searchBox.TextChanged += (sender, e) =>
+                            {
+                                // Reset the timer every time the text changes
+                                searchTimer.Stop();
+                                searchTimer.Start();
+                            };
+
+                            searchTimer.Tick += (sender, e) =>
+                            {
+                                // Stop the timer
+                                searchTimer.Stop();
+
+                                // Perform the search
+                                string searchText = searchBox.Text.ToLower();
+                                foreach (DataGridViewRow row in scriptsDataGridView.Rows)
+                                {
+                                    string scriptId = row.Cells["Id"].Value.ToString();
+                                    Script script = scripts.Find(s => s.Id == scriptId);
+
+                                    bool isMatch = script.Id.ToLower().Contains(searchText)
+                                        || script.Name.ToLower().Contains(searchText)
+                                        || script.Author.ToLower().Contains(searchText)
+                                        || script.Last_update.ToLower().Contains(searchText);
+
+                                    row.Visible = isMatch;
+                                }
+                            };
                         }
                         else
                         {
