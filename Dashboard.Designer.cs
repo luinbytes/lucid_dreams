@@ -395,7 +395,7 @@ namespace lucid_dreams
                     using (HttpClient client = new HttpClient())
                     {
                         // Static URL to the release zip file
-                        string downloadUrl = "https://github.com/luinbytes/lucid_dreams/releases/download/stable/lucid_dreams.zip";
+                        string downloadUrl = "https://github.com/luinbytes/lucid_dreams/releases/tag/stable";
 
                         HttpResponseMessage downloadResponse = await client.GetAsync(downloadUrl);
 
