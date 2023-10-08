@@ -16,7 +16,7 @@ namespace lucid_dreams
 
     public partial class Dashboard : MaterialForm
     {
-        string version = "v0.7.3";
+        string version = "v0.7.6";
         string userkey = Login.GlobalUserKey;
         string username = Login.GlobalUsername;
         //string linkKey = Login.GlobalKeyLink;
@@ -342,12 +342,43 @@ namespace lucid_dreams
 
             this.materialTabControl.TabPages[0].Controls.Add(launchUniverseButton);
 
-            launchUniverseButton.Click += (sender, e) =>
+            launchUniverseButton.Click += async (sender, e) =>
             {
                 string pathToBatchFile = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "launch.bat");
-                if (File.Exists(pathToBatchFile))
+                string downloadUrl = "https://constelia.ai/launch.bat";
+
+                using (HttpClient client = new HttpClient())
                 {
-                    Process.Start("cmd.exe", $"/c start \"\" \"{pathToBatchFile}\"");
+                    var response = await client.GetAsync(downloadUrl);
+
+                    if (response.IsSuccessStatusCode)
+                    {
+                        var content = await response.Content.ReadAsByteArrayAsync();
+                        File.WriteAllBytes(pathToBatchFile, content);
+                    }
+                    else
+                    {
+                        MessageBox.Show($"Error: Unable to download file from {downloadUrl}");
+                        return;
+                    }
+                }
+
+               if (File.Exists(pathToBatchFile))
+                {
+                    if (protection == "2" || protection == "4")
+                    {
+                        Process.Start(new ProcessStartInfo
+                        {
+                            FileName = "cmd.exe",
+                            Arguments = $"/c start \"\" \"{pathToBatchFile}\"",
+                            UseShellExecute = true,
+                            CreateNoWindow = true
+                        });
+                    }
+                    else
+                    {
+                        Process.Start("cmd.exe", $"/c start \"\" \"{pathToBatchFile}\"");
+                    }
                 }
                 else
                 {
@@ -365,12 +396,43 @@ namespace lucid_dreams
 
             this.materialTabControl.TabPages[0].Controls.Add(launchConstellationButton);
 
-            launchConstellationButton.Click += (sender, e) =>
+            launchConstellationButton.Click += async (sender, e) =>
             {
                 string pathToBatchFile = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "constellation.bat");
+                string downloadUrl = "https://constelia.ai/constellation.bat";
+
+                using (HttpClient client = new HttpClient())
+                {
+                    var response = await client.GetAsync(downloadUrl);
+
+                    if (response.IsSuccessStatusCode)
+                    {
+                        var content = await response.Content.ReadAsByteArrayAsync();
+                        File.WriteAllBytes(pathToBatchFile, content);
+                    }
+                    else
+                    {
+                        MessageBox.Show($"Error: Unable to download file from {downloadUrl}");
+                        return;
+                    }
+                }
+
                 if (File.Exists(pathToBatchFile))
                 {
-                    Process.Start("cmd.exe", $"/c start \"\" \"{pathToBatchFile}\"");
+                    if (protection == "2" || protection == "4")
+                    {
+                        Process.Start(new ProcessStartInfo
+                        {
+                            FileName = "cmd.exe",
+                            Arguments = $"/c start \"\" \"{pathToBatchFile}\"",
+                            UseShellExecute = true,
+                            CreateNoWindow = true
+                        });
+                    }
+                    else
+                    {
+                        Process.Start("cmd.exe", $"/c start \"\" \"{pathToBatchFile}\"");
+                    }
                 }
                 else
                 {
@@ -394,7 +456,6 @@ namespace lucid_dreams
                 {
                     using (HttpClient client = new HttpClient())
                     {
-                        // Static URL to the release zip file
                         string downloadUrl = "https://github.com/luinbytes/lucid_dreams/releases/download/stable/lucid_dreams.zip";
 
                         HttpResponseMessage downloadResponse = await client.GetAsync(downloadUrl);
@@ -479,38 +540,26 @@ namespace lucid_dreams
                 AutoSize = false,
                 Location = new Point(protectionComboBox.Location.X + protectionComboBox.Width + 10, protectionComboBox.Location.Y), 
                 Size = new Size(100, 49), 
-                Text = "Set Protection" 
+                Text = "Set Protection"
             };
 
             setProtectionButton.Click += async (sender, e) =>
             {
                 try
                 {
-                    
                     HttpClient client = new HttpClient();
                     HttpResponseMessage response = await client.GetAsync($"https://constelia.ai/api.php?key={userkey}&cmd=setProtection&protection={protectionComboBox.SelectedIndex}");
                                 
                     if (response.IsSuccessStatusCode)
                     {
-
-                        
                         setProtectionButton.Text = "Protection set!";
-
-                        
                         System.Windows.Forms.Timer timer = new System.Windows.Forms.Timer();
-                        timer.Interval = 5000; 
-
-                        
+                        timer.Interval = 5000;    
                         timer.Tick += (s, ea) =>
-                        {
-                            
+                        {  
                             setProtectionButton.Text = "Set Protection";
-
-                            
                             timer.Stop();
                         };
-
-                        
                         timer.Start();
                     }
                     else
@@ -523,14 +572,10 @@ namespace lucid_dreams
                     MessageBox.Show($"An error occurred: {ex.Message}");
                 }
             };
-
             
             this.materialTabControl.TabPages[0].Controls.Add(setProtectionButton);
             
-
-            
             this.materialTabControl.TabPages[0].Controls.Add(protectionComboBox);
-            
 
             JsonDocument document = JsonDocument.Parse(Login.GlobalConfig);
             string formattedJson = System.Text.Json.JsonSerializer.Serialize(document, new JsonSerializerOptions { WriteIndented = true });
@@ -568,12 +613,8 @@ namespace lucid_dreams
                     if (response.IsSuccessStatusCode)
                     {
                         string config = await response.Content.ReadAsStringAsync();
-
-                        
                         JsonDocument document = JsonDocument.Parse(config);
                         string formattedJson = System.Text.Json.JsonSerializer.Serialize(document, new JsonSerializerOptions { WriteIndented = true });
-
-                        
                         multilineTextField.Text = formattedJson;
                     }
                     else
@@ -587,10 +628,8 @@ namespace lucid_dreams
                 }
             };
 
-            
             this.materialTabControl.TabPages[1].Controls.Add(loadConfigButton);
 
-            
             MaterialSkin.Controls.MaterialButton saveConfigButton = new MaterialSkin.Controls.MaterialButton
             {
                 Location = new Point(multilineTextField.Location.X + multilineTextField.Width + 30, multilineTextField.Location.Y + loadConfigButton.Height + 10), 
@@ -602,18 +641,10 @@ namespace lucid_dreams
             {
                 try
                 {
-                    
                     string config = multilineTextField.Text;
-
-                    
                     string encodedConfig = HttpUtility.UrlEncode(config);
-
-                    
                     HttpClient client = new HttpClient();
-
-                    
                     StringContent content = new StringContent($"value={encodedConfig}", Encoding.UTF8, "application/x-www-form-urlencoded");
-
                     
                     HttpResponseMessage response = await client.PostAsync($"https://constelia.ai/api.php?key={userkey}&cmd=setConfiguration", content);
 

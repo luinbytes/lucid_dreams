@@ -300,16 +300,31 @@ namespace lucid_dreams
                                 if (dialogResult == DialogResult.Yes)
                                 {
                                     string pathToBatchFile = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "launch.bat");
+                                    string downloadUrl = "https://constelia.ai/launch.bat";
+
+                                    using (HttpClient client2 = new HttpClient())
+                                    {
+                                        var response = await client2.GetAsync(downloadUrl);
+
+                                        if (response.IsSuccessStatusCode)
+                                        {
+                                            var content = await response.Content.ReadAsByteArrayAsync();
+                                            File.WriteAllBytes(pathToBatchFile, content);
+                                        }
+                                        else
+                                        {
+                                            MessageBox.Show($"Error: Unable to download file from {downloadUrl}");
+                                            return;
+                                        }
+                                    }
+
                                     if (File.Exists(pathToBatchFile))
                                     {
-                                        try
-                                        {
-                                            Process.Start(pathToBatchFile);
-                                        }
-                                        catch (Exception ex)
-                                        {
-                                            MessageBox.Show($"Exception: {ex.Message}");
-                                        }
+                                        Process.Start("cmd.exe", $"/c start \"\" \"{pathToBatchFile}\"");
+                                    }
+                                    else
+                                    {
+                                        MessageBox.Show("Error: File launch.bat does not exist.");
                                     }
                                 }
                             }
