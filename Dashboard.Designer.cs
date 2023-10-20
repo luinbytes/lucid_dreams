@@ -16,7 +16,7 @@ namespace lucid_dreams
 
     public partial class Dashboard : MaterialForm
     {
-        string version = "v0.7.6";
+        string version = "v0.7.8";
         string userkey = Login.GlobalUserKey;
         string username = Login.GlobalUsername;
         //string linkKey = Login.GlobalKeyLink;

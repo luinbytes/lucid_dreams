@@ -89,15 +89,8 @@ namespace lucid_dreams
         public static JsonElement Root2 { get; set; }
 
         private MaterialTextBox keyTextBox;
-       
-        
-        
-        
         private System.ComponentModel.IContainer components = null;
 
-        
-        
-        
         
         protected override void Dispose(bool disposing)
         {
@@ -134,6 +127,8 @@ namespace lucid_dreams
             keyTextBox.Hint = "Enter your key";
             keyTextBox.Location = new Point(10, 80);
             keyTextBox.Size = new Size(315, 30);
+            keyTextBox.Password = true;
+            
             this.Controls.Add(keyTextBox);
 
             MaterialButton loginButton = new MaterialButton();
