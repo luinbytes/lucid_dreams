@@ -148,9 +148,12 @@ namespace lucid_dreams
             this.Controls.Add(faqButton);
 
             toggleKeyVisButton.Click += (sender, e) => {
+                string key = keyTextBox.Text;
                 keyTextBox.Password = !keyTextBox.Password;
+                keyTextBox.Text = "";
+                keyTextBox.Text = key;
                 toggleKeyVisButton.Text = keyTextBox.Password ? "Show Key" : "Hide Key";
-            };
+            }; //This is absolutely gross. However the material library doesn't account for text displayed as a password being longer than the text itself. Kinda fixes it.
 
             faqButton.Click += (sender, e) => {
                 MessageBox.Show("Q: Error! Unautherized!\nA: Your hash is incorrect. Try making a new session.\n\n", "Lucid Dreams - FAQ", MessageBoxButtons.OK, MessageBoxIcon.Information);
