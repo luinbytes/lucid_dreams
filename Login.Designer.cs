@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Drawing;
+using System.Text.RegularExpressions;
 using System.Net.Http;
 using System.Net;
 using System.Diagnostics;
@@ -128,12 +129,16 @@ namespace lucid_dreams
             keyTextBox.Location = new Point(10, 80);
             keyTextBox.Size = new Size(315, 30);
             keyTextBox.Password = true;
-            
             this.Controls.Add(keyTextBox);
+
+            MaterialButton toggleKeyVisButton = new MaterialButton();
+            toggleKeyVisButton.Text = "Show Key";
+            toggleKeyVisButton.Location = new Point(this.ClientSize.Width - toggleKeyVisButton.Width - 100, this.ClientSize.Height - toggleKeyVisButton.Height + 29);
+            this.Controls.Add(toggleKeyVisButton);
 
             MaterialButton loginButton = new MaterialButton();
             loginButton.Text = "Login";
-            loginButton.Location = new Point(this.ClientSize.Width - loginButton.Width - 115, this.ClientSize.Height - loginButton.Height + 29);
+            loginButton.Location = new Point(this.ClientSize.Width - loginButton.Width - 235, this.ClientSize.Height - loginButton.Height + 29);
             this.Controls.Add(loginButton);
 
             MaterialButton faqButton = new MaterialButton();
@@ -142,12 +147,23 @@ namespace lucid_dreams
             faqButton.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
             this.Controls.Add(faqButton);
 
+            toggleKeyVisButton.Click += (sender, e) => {
+                keyTextBox.Password = !keyTextBox.Password;
+                toggleKeyVisButton.Text = keyTextBox.Password ? "Show Key" : "Hide Key";
+            };
+
             faqButton.Click += (sender, e) => {
                 MessageBox.Show("Q: Error! Unautherized!\nA: Your hash is incorrect. Try making a new session.\n\n", "Lucid Dreams - FAQ", MessageBoxButtons.OK, MessageBoxIcon.Information);
             };
 
             loginButton.Click += async (sender, e) => {
                 string userKey = keyTextBox.Text;
+                Regex regex = new Regex(@"^[A-Z]{4}-[A-Z]{4}-[A-Z]{4}-[A-Z]{4}$");
+                if (!regex.IsMatch(userKey))
+                {
+                    MessageBox.Show("Invalid key format. Please enter a key in the format: ABCD-EFGH-IJKL-MNOP", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
 
                 using (HttpClient client = new HttpClient())
                 {
