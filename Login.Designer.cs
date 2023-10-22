@@ -161,7 +161,7 @@ namespace lucid_dreams
 
             loginButton.Click += async (sender, e) => {
                 string userKey = keyTextBox.Text;
-                Regex regex = new Regex(@"^[A-Z]{4}-[A-Z]{4}-[A-Z]{4}-[A-Z]{4}$");
+                Regex regex = new Regex(@"^[A-Z0-9]{4}-[A-Z0-9]{4}-[A-Z0-9]{4}-[A-Z0-9]{4}$");
                 if (!regex.IsMatch(userKey))
                 {
                     MessageBox.Show("Invalid key format. Please enter a key in the format: ABCD-EFGH-IJKL-MNOP", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
